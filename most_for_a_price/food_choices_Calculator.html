@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <script src = "jquery-1.10.2.js"></script>
+        <script>
+            var i = 0;
+            var x = [10,"x"];
+            var y = [13,"y"];
+            var z = [13,"z"];
+            var choice = [x,y,z]
+            $(document).ready(function() {
+                $("br").after("<h2> The best amount for item one is</h2><br><h2> The best amount for item two is</h2><br><h2> The best amount for item three is</h2><br>");
+                $("button:first").click(function () {
+                    if (i == 3) {
+                        i = 0;
+                    }
+                    console.log(choice[i]);
+                    i += 1;
+                    
+                });
+                $("button").eq(1).click(function() {
+                    choice[i-1][0] += 1;
+                    console.log(choice);
+                    total();
+                });
+                $("button:last").click(function() {
+                    choice[i-1][0] -= 1;
+                    console.log(choice);
+                    total();
+                });
+                function total(){
+                var total = 1.89*x[0] +1*y[0]  + .79*z[0]
+                console.log(total);
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h1> Welcome to the best deal calcuator</h1>
+        <br>
+        <button> click to choose food item</button>
+        <button> click to increase</button>
+        <button> click to decrease</button>
+
+        
+    </body>
+</html>
