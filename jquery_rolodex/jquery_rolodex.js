@@ -1,4 +1,13 @@
 //look for function solution and shorten this code, $(this) was screwing you big time
+//capabilities : place any amount of items into rolodex
+//             : rolodex clockwise core functionality
+//             : rolodex counterclockwise core functionality
+//             
+
+// planned work: easing functionality
+//             : 3d data consideration
+//             : order resort (if you built your items in one order and used another way to do it
+//             : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
 
 
 //global variables and functions
