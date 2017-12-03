@@ -1,14 +1,16 @@
-//look for function solution and shorten this code, $(this) was screwing you big time
+//added z-index capability
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
-//             
+//             :3d data consideration
 
-// planned work: easing functionality
+//
+
+// planned work: attribute options
+//             : easing functionality
 //             : 3d data consideration
 //             : order resort (if you built your items in one order and used another way to do it
 //             : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
-
 
 //global variables and functions
 var rolodex_array = new Array(); //to see what items the function is working with
@@ -82,7 +84,7 @@ var decision = "object"; // lets function know whether to use this items or the 
                     rolodex_array.forEach(function(element){
     
                             consoles(direction,element);
-                            element[0].offset({top:element[direction][1][0].top,left:element[direction][1][0].left});
+                            element[0].offset({top:element[direction][1][0].top,left:element[direction][1][0].left}).css("z-index",element[1][1][1].split(" ")[1]);
     
                     });
                  }
@@ -174,6 +176,7 @@ var decision = "object"; // lets function know whether to use this items or the 
                     console.log(data)
                     console.log("where items is",data[0].offset());
                     console.log("where items must go",data[1][1][0]);
+                    console.log("new z -index",data[1][1][1].split(" ")[1]);
                     // console.log("i cant call this loop normally",execute)
                 }
                 
