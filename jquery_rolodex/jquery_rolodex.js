@@ -1,8 +1,9 @@
-//quick fix for rolodex, It was only using prev z-index not responding to direction so i replaced it so it know the direction to go
+//rolodex xml_re_content work independent of each other, they are not designed to work together yet
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
 //             : 3d data consideration
+//             :seperate xml_recontent, so rolodex apperas to have more items but rolls through designated items only skipping the others
 
 //
 
@@ -11,15 +12,19 @@
 //             : order resort (if you built your items in one order and used another way to do it
 //             : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
 
+
+//FIX rolodex_animation, parameters do not match up
 //global variables and functions
 var rolodex_array = new Array(); //to see what items the function is working with
 var z_array  = new Array(); //this variable sees what is facing to the front
 var rolodex_item = 0; //refers to the items in the rolodex
-var its_ok = 1; //debugger
+var its_ok ; //debugger
 var rolodex_set;
 var decision = "object"; // lets function know whether to use this items or the the rolodex_array,$(this) once again is misleading and refers to the whole window
 var rolodex_element; //for optional 3d animation
-
+var rolodex_movement_type; //will hold a function which controls how the rolodex moves itself
+var desired_display; //for xml rolodex item recontent
+var rolodex_execute; //to return how many times the data_collect function, this is to keep track of the head as well as to help the xml_re_content attribute
 
 
     
@@ -29,19 +34,30 @@ var rolodex_element; //for optional 3d animation
             
             
             // option control
-            if(michael['simple_3d'] == 'true'){
+            if(michael.simple_3d == 'true'){
                 function simple_z_display (which,z_element){
                     z_element[0].css("z-index",z_element[which][1][1].split(" ")[1]);
                 }
             }
             
+            if(michael.animate == 'true'){
+                function rolodex_amination (animate_element) {
+                    rolodex_movement_type = animate_element.animate;
+                    // console.log(rolodex_movement_type);
+                }
+            }
+            
+
+                        
             
             
             var rolodex_set = $(this).length; //this variable gives the size of the rolodex to let the function know what it has to do
             var rolodex_array = new Array(1 * rolodex_set); //to see what items the function is working with
             var z_array  = new Array(1 * rolodex_set);
             var rolodex_item = 0; //refers to the items in the rolodex
-            var its_ok = 0; //debugger
+            rolodex_movement_type = $.offset;
+            var its_ok = 1; //debugger
+            rolodex_execute = 0; //becuase at this point data collect will execute once
 
             var decision_first = $.map($(this), function(value, index) {
                 return [[$(value),undefined]];
@@ -53,29 +69,21 @@ var rolodex_element; //for optional 3d animation
             //need a rolodex array or without knowing about the prev and next necessary information, we would be using a highly unfavorable linked list
                     
 
+            if(michael.xml_re_content !== undefined){
+                console.log(michael.xml_re_content)
+                if(michael.xml_re_content[0] == 'true'){
+                    var pull_index = 0;
+                    desired_display = [];
+                    while(pull_index != parseInt(michael.xml_re_content[2]) + 1   ) {
+                        desired_display.push(decision_first[pull_index][0].offset());
+                        pull_index += 1;
+                    }
+                    consoles("re_content",[michael.xml_re_content,desired_display],0);
+                }
+            }
 
             
-            // console.log(decision)
-            
 
-            // return;
-
-            // while(rolodex_item != rolodex_set){
-            //     var rolodex_prev_item = rolodex_item - 1; //refers to previous item in rolodex
-            //     var rolodex_next_item = rolodex_item + 1; //refers  to previous item in rolodex
-            //     if ( rolodex_prev_item  < 0){
-            //          rolodex_prev_item = $(this).length -1;
-            //     }
-            //     if ( rolodex_next_item  > 7){
-            //          rolodex_next_item = 0;
-            //     }
-            //     var prev_offset = [$(this).eq(rolodex_prev_item).offset(),"z-index "  +$(this).eq(rolodex_prev_item).css("z-index")];
-            //     var next_offset = [$(this).eq(rolodex_next_item).offset(),"z-index "  + $(this).eq(rolodex_next_item).css("z-index")];
-            //     rolodex_array.push([$(this).eq(rolodex_item), ["object  "  + ( rolodex_prev_item).toString() +"prev is" , prev_offset],["object  " + (rolodex_next_item).toString() +"next is" , next_offset] ]);
-            //     z_array.push([rolodex_item,parseInt($(this).eq(rolodex_item).css("z-index")),$(this).eq(rolodex_item).offset()])
-            //     rolodex_item += 1;
-            // }
-            // rolodex_item = 0;
             data_collect(0);
             //this finds out about the positions of every item, it is the control room loop, when the rolodex moves, the rolodex gets updated realtime with this
             //find out why it cant be a function
@@ -94,11 +102,28 @@ var rolodex_element; //for optional 3d animation
                     rolodex_array.forEach(function(rolodex_element){
     
                             consoles(direction,rolodex_element);
-                            rolodex_element[0].offset({top:rolodex_element[direction][1][0].top,left:rolodex_element[direction][1][0].left})
+                            if(rolodex_amination !== undefined){
+                                rolodex_amination(rolodex_element[0]);
+                                rolodex_element[0].animate({
+                                        top:rolodex_element[direction][1][0].top,
+                                        left:rolodex_element[direction][1][0].left
+                                        
+                                    });
+                            }
+                            
+                            else {
+
+                                rolodex_element[0].offset({
+                                        top:rolodex_element[direction][1][0].top,
+                                        left:rolodex_element[direction][1][0].left
+                                    });
+                            }
                             if (simple_z_display !== undefined){
-                                consoles("simple_z_display",simple_z_display,0);
+                                consoles("simple_z_display",simple_z_display);
                                 simple_z_display(direction,rolodex_element);
                             }
+                            
+
     
                     });
                  }
@@ -145,11 +170,7 @@ var rolodex_element; //for optional 3d animation
                 
                 //receving coordinates for re-positioning
 
-                // if (decision != rolodex_array){
-                //     rolodex_array.push([$(this).eq(rolodex_item), ["object  "  + ( rolodex_prev_item).toString() +"prev is" , prev_offset],["object  " + (rolodex_next_item).toString() +"next is" , next_offset] ]);
-                //     z_array.push([rolodex_item,parseInt($(this).eq(rolodex_item).css("z-index")),$(this).eq(rolodex_item).offset()]);
-                // }
-                // else {
+
                 rolodex_array[rolodex_item] = [decision[rolodex_item][0], ["object  "  + ( rolodex_prev_item).toString() +"prev is" , prev_offset],["object  " + (rolodex_next_item).toString() +"next is" , next_offset] ];
                 z_array[rolodex_item] = ([rolodex_item,parseInt(decision[rolodex_item][0].css("z-index"))]);
                 // }
@@ -159,13 +180,27 @@ var rolodex_element; //for optional 3d animation
                 }
                 rolodex_item = 0;
                 //always set to zero once data is sorted through, the items never changed in the order they were brought into the function, don't think of the items to be in a line think of them to be with seperate ID's
+                rolodex_execute += 1;
+                console.log(rolodex_execute)
+                return rolodex_execute;
             }
             
             $left.click(function () {
-            
-            
-
                 data_collect(1);
+                if(desired_display !== undefined ){
+                    console.log("ready to work");
+                    var i = 0;// so desired display can reset
+                    if (rolodex_execute > desired_display.length  ){
+                        while(i != rolodex_set - (desired_display.length ) ){
+                            data_collect(1);
+                            i += 1;
+                            
+                        }
+                        rolodex_execute = 1;
+                        
+                    }
+                    
+                }
                 
             
 
@@ -174,9 +209,27 @@ var rolodex_element; //for optional 3d animation
             });
             //moves in counterclockwise function
             $right.click(function () {
-                
-                
                 data_collect(2);
+                if(desired_display !== undefined ){
+                    console.log("ready to work");
+                    var i = 0;// so desired display can reset
+                    if (rolodex_execute < rolodex_set  ){
+                        while(i != rolodex_set - (desired_display.length ) ){
+                            data_collect(2);
+                            i += 1;
+                            
+                        }
+                    }
+                    else if(rolodex_execute >= rolodex_set + desired_display.length - 2) {
+                        console.log(rolodex_set + desired_display.length)
+                        rolodex_execute = 1;
+                    }
+                        
+                        
+                    
+                    
+                }
+                
                 
             });
             //moves in clockwise function
@@ -213,6 +266,10 @@ var rolodex_element; //for optional 3d animation
                 if (action === 'simple_z_display'){
                     console.log(data);
                 }
+                
+                if (action === 're_content'){
+                    console.log(data)
+                }
                 else {
                     console.log("michael element\n",michael);
                     console.log("clockwise control element\n",$left);
@@ -222,6 +279,7 @@ var rolodex_element; //for optional 3d animation
                     console.log( "rolodex_array \n" ,rolodex_array);
                     console.log( "z_array \n" ,z_array);
                     console.log("rolodex_item \n" , rolodex_item);
+                    console.log("rolodex_execute \n" , rolodex_execute);
                     // console.log("prev_rolodex_item \n" , rolodex_prev_item);
                     // console.log("next_rolodex_item \n" , rolodex_next_item);
                     
