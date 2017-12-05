@@ -1,0 +1,13 @@
+additional ideas for rolodex
+
+rolodact,
+by taking every element of all website and placing them in one webpage then using event handlers to visit the new page by show in and hiding the elements of pages and using the rolodex functionality to place them in , its not even rolodex anymore i would give it a more powerful name the rolo-didact but a more befitting one is the rolodax
+
+shapes
+in rolodex, it should have ability to take a jumbled mess and make a rolodex with the user choosing a shape design for it
+
+face
+how should the 3-d aspect work, is the face to the left, does 7 come before 2 or we have a function to follow, rolodex should have the capability, this is where the function becomes big
+
+order
+if the rolodex items are disordered rolodex should be able to fix things

@@ -1,14 +1,13 @@
-//added z-index capability
+//quick fix for rolodex, It was only using prev z-index not responding to direction so i replaced it so it know the direction to go
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
-//             :3d data consideration
+//             : 3d data consideration
 
 //
 
 // planned work: attribute options
 //             : easing functionality
-//             : 3d data consideration
 //             : order resort (if you built your items in one order and used another way to do it
 //             : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
 
@@ -19,6 +18,7 @@ var rolodex_item = 0; //refers to the items in the rolodex
 var its_ok = 1; //debugger
 var rolodex_set;
 var decision = "object"; // lets function know whether to use this items or the the rolodex_array,$(this) once again is misleading and refers to the whole window
+var rolodex_element; //for optional 3d animation
 
 
 
@@ -27,9 +27,19 @@ var decision = "object"; // lets function know whether to use this items or the 
         rolodex:function(michael,$left,$right){
             //this function takes items and attempts to make a rolodex out of it. A rolodex is an object which behaves like a carousel but instead of left to right all the objects are part of a circle overlapping each other with the current items having the highest z-index and the others overlapping in proper fashion
             
+            
+            // option control
+            if(michael['simple_3d'] == 'true'){
+                function simple_z_display (which,z_element){
+                    z_element[0].css("z-index",z_element[which][1][1].split(" ")[1]);
+                }
+            }
+            
+            
+            
             var rolodex_set = $(this).length; //this variable gives the size of the rolodex to let the function know what it has to do
             var rolodex_array = new Array(1 * rolodex_set); //to see what items the function is working with
-            var z_array = [] = new Array(1 * rolodex_set);
+            var z_array  = new Array(1 * rolodex_set);
             var rolodex_item = 0; //refers to the items in the rolodex
             var its_ok = 0; //debugger
 
@@ -81,10 +91,14 @@ var decision = "object"; // lets function know whether to use this items or the 
             function data_collect (direction = "none") {
                  rolodex_item = 0;
                  if (direction == 1 || direction == 2) {
-                    rolodex_array.forEach(function(element){
+                    rolodex_array.forEach(function(rolodex_element){
     
-                            consoles(direction,element);
-                            element[0].offset({top:element[direction][1][0].top,left:element[direction][1][0].left}).css("z-index",element[1][1][1].split(" ")[1]);
+                            consoles(direction,rolodex_element);
+                            rolodex_element[0].offset({top:rolodex_element[direction][1][0].top,left:rolodex_element[direction][1][0].left})
+                            if (simple_z_display !== undefined){
+                                consoles("simple_z_display",simple_z_display,0);
+                                simple_z_display(direction,rolodex_element);
+                            }
     
                     });
                  }
@@ -171,6 +185,7 @@ var decision = "object"; // lets function know whether to use this items or the 
                 if(debug !== 0){
                     return;
                 }
+                
                 if(action  == 1){
                     console.log("counterwise seperate actions");
                     console.log(data)
@@ -194,6 +209,10 @@ var decision = "object"; // lets function know whether to use this items or the 
                     console.log("what the prev_item returns on universal application", data[0])
                     console.log("what the next_item returns on universal application", data[1])
                 }
+                
+                if (action === 'simple_z_display'){
+                    console.log(data);
+                }
                 else {
                     console.log("michael element\n",michael);
                     console.log("clockwise control element\n",$left);
@@ -215,9 +234,7 @@ var decision = "object"; // lets function know whether to use this items or the 
             
             
             
-            if (michael == "none"){
-                return;
-            }
+
             
         }
     });
