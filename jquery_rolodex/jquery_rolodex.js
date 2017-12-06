@@ -1,9 +1,9 @@
-//rolodex xml_re_content work independent of each other, they are not designed to work together yet
+//rolodex xml_re_content works only in my example,if the index = 0-1 repositing finds its self at less than the the the total amount of rolodex items, it becomes confused and breaks
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
 //             : 3d data consideration
-//             :seperate xml_recontent, so rolodex apperas to have more items but rolls through designated items only skipping the others
+//             : semi-functional xml_recontent capability
 
 //
 
@@ -207,24 +207,34 @@ var rolodex_execute; //to return how many times the data_collect function, this 
             
                 
             });
-            //moves in counterclockwise function
+            //moves in clockwise function
             $right.click(function () {
                 data_collect(2);
                 if(desired_display !== undefined ){
                     console.log("ready to work");
                     var i = 0;// so desired display can reset
-                    if (rolodex_execute < rolodex_set  ){
+                    if( rolodex_execute >= 3 && rolodex_execute <= desired_display.length + 1 ){
+                        consoles("re_content" ,rolodex_execute);
+                        rolodex_execute -= 2;
+                        
+                        
+                        
+                    }
+                    //left was executed
+                    else if (rolodex_execute < rolodex_set  ){
                         while(i != rolodex_set - (desired_display.length ) ){
                             data_collect(2);
                             i += 1;
                             
                         }
                     }
+                    //revert past dataless items to last data item
+                                      
                     else if(rolodex_execute >= rolodex_set + desired_display.length - 2) {
-                        console.log(rolodex_set + desired_display.length)
+                        console.log(rolodex_set + desired_display.length -2)
                         rolodex_execute = 1;
                     }
-                        
+                    //reset rolodex execute
                         
                     
                     
@@ -232,7 +242,7 @@ var rolodex_execute; //to return how many times the data_collect function, this 
                 
                 
             });
-            //moves in clockwise function
+            //moves in counterclockwise function
             // console logs
             function consoles(action = "none",data = undefined,debug = its_ok) {
                 if(debug !== 0){
@@ -265,10 +275,17 @@ var rolodex_execute; //to return how many times the data_collect function, this 
                 
                 if (action === 'simple_z_display'){
                     console.log(data);
+                    
                 }
                 
                 if (action === 're_content'){
-                    console.log(data)
+                    
+                    if(isNaN(data)){
+                        console.log(data);
+                    }
+                    else{
+                        console.log("trigger nothing hold back to index zero then contiune as off face",data);
+                    }
                 }
                 else {
                     console.log("michael element\n",michael);
