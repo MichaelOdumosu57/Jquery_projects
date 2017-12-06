@@ -1,4 +1,4 @@
-//rolodex xml_re_content works only in my example,if the index = 0-1 repositing finds its self at less than the the the total amount of rolodex items, it becomes confused and breaks
+//used two variables for xml recotent purpose becuase there are too many case factors to only work with one direction
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -24,7 +24,10 @@ var decision = "object"; // lets function know whether to use this items or the 
 var rolodex_element; //for optional 3d animation
 var rolodex_movement_type; //will hold a function which controls how the rolodex moves itself
 var desired_display; //for xml rolodex item recontent
-var rolodex_execute; //to return how many times the data_collect function, this is to keep track of the head as well as to help the xml_re_content attribute
+var rolodex_execute;
+var rolodex_execute_clockwise;
+var rolodex_execute_counterwise;
+//to return how many times the data_collect function, this is to keep track of the head as well as to help the xml_re_content attribute
 
 
     
@@ -58,6 +61,8 @@ var rolodex_execute; //to return how many times the data_collect function, this 
             rolodex_movement_type = $.offset;
             var its_ok = 1; //debugger
             rolodex_execute = 0; //becuase at this point data collect will execute once
+            rolodex_execute_clockwise = 0; //how many times the rolodex went clockwise and counter
+            rolodex_execute_counterwise = 0;
 
             var decision_first = $.map($(this), function(value, index) {
                 return [[$(value),undefined]];
@@ -79,6 +84,10 @@ var rolodex_execute; //to return how many times the data_collect function, this 
                         pull_index += 1;
                     }
                     consoles("re_content",[michael.xml_re_content,desired_display],0);
+                    if(michael.xml_re_content[1] === michael.xml_re_content[2] || michael.xml_re_content[1] === undefined || michael.xml_re_content[2] === undefined){
+                        console.log("can't be same index or need to be different indexes");
+                        desired_display = undefined;
+                    }
                 }
             }
 
@@ -181,27 +190,49 @@ var rolodex_execute; //to return how many times the data_collect function, this 
                 rolodex_item = 0;
                 //always set to zero once data is sorted through, the items never changed in the order they were brought into the function, don't think of the items to be in a line think of them to be with seperate ID's
                 rolodex_execute += 1;
-                console.log(rolodex_execute)
                 return rolodex_execute;
             }
             
             $left.click(function () {
                 data_collect(1);
-                if(desired_display !== undefined ){
-                    console.log("ready to work");
-                    var i = 0;// so desired display can reset
-                    if (rolodex_execute > desired_display.length  ){
-                        while(i != rolodex_set - (desired_display.length ) ){
+                rolodex_execute_counterwise +=1;
+                rolodex_execute_clockwise -= 1;
+                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],0);
+                
+                if(desired_display != undefined){
+
+                    if(rolodex_execute_counterwise > desired_display.length - 1 ){
+                        var i = 0;//counter to switch back to first
+                        while (i != rolodex_set - desired_display.length) {
                             data_collect(1);
-                            i += 1;
-                            
+                            i +=1;
                         }
-                        rolodex_execute = 1;
-                        
+                    rolodex_execute_counterwise = 0;
+                    rolodex_execute_clockwise = 0;
                     }
-                    
                 }
                 
+                
+                // if(desired_display !== undefined ){
+                //     console.log("ready to work");
+                //     var i = 0;// so desired display can reset
+
+                //     if (rolodex_execute_counterwise > desired_display.length -1 || rolodex_execute > desired_display.length -1 ){
+                //         console.log(rolodex_execute)
+                //         while(i != rolodex_set - (desired_display.length ) ){
+                //             data_collect(1);
+                //             i += 1;
+                            
+                //         }
+                //         rolodex_execute = 1;
+                //         rolodex_execute_counterwise = 0;
+                        
+                //     }
+                    
+                // }
+                
+                // && !(rolodex_execute >= rolodex_set - 1 && rolodex_execute <= rolodex_set + desired_display.length)
+                //didnt make counterwise work, if it was in middle of rolodex it messed up, plus worked for only
             
 
             
@@ -210,35 +241,59 @@ var rolodex_execute; //to return how many times the data_collect function, this 
             //moves in clockwise function
             $right.click(function () {
                 data_collect(2);
-                if(desired_display !== undefined ){
-                    console.log("ready to work");
-                    var i = 0;// so desired display can reset
-                    if( rolodex_execute >= 3 && rolodex_execute <= desired_display.length + 1 ){
-                        consoles("re_content" ,rolodex_execute);
-                        rolodex_execute -= 2;
-                        
-                        
+                rolodex_execute_clockwise += 1;
+                rolodex_execute_counterwise -= 1;
+                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
+                
+                if(desired_display != undefined){
+                    if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise < 0 ){
+                        rolodex_execute_clockwise = 0;
+                        rolodex_execute_counterwise = 0;
                         
                     }
-                    //left was executed
-                    else if (rolodex_execute < rolodex_set  ){
-                        while(i != rolodex_set - (desired_display.length ) ){
+                    if(rolodex_execute_clockwise == 1 || rolodex_execute_clockwise > desired_display.length){
+                        var i = 0;//counter to switch back to first
+                        console.log(desired_display.length)
+                        while (i != rolodex_set - desired_display.length) {
                             data_collect(2);
-                            i += 1;
-                            
+                            i +=1;
                         }
+                    
                     }
-                    //revert past dataless items to last data item
+                }
+
+                // if(desired_display !== undefined ){
+                //     // if (rolodex_execute_counterwise == 0){
+                //     //     rolodex_execute_counterwise = desired_display.length  ;
+                //     // }
+                //     console.log("ready to work");
+                //     var i = 0;// so desired display can reset
+                //     if( rolodex_execute >= 3 && rolodex_execute <= desired_display.length + 1 ){
+                //         consoles("re_content" ,rolodex_execute);
+                //         rolodex_execute -= 2;
+                        
+                        
+                        
+                //     }
+                //     //left was executed
+                //     else if (rolodex_execute < (rolodex_set + 2) - desired_display.length  ){
+                //         while(i != rolodex_set - (desired_display.length ) ){
+                //             data_collect(2);
+                //             i += 1;
+                            
+                //         }
+                //     }
+                //     //revert past dataless items to last data item, but bad conditional statement
                                       
-                    else if(rolodex_execute >= rolodex_set + desired_display.length - 2) {
-                        console.log(rolodex_set + desired_display.length -2)
-                        rolodex_execute = 1;
-                    }
-                    //reset rolodex execute
+                //     else if(rolodex_execute >= rolodex_set + desired_display.length - 2) {
+                //         console.log(rolodex_set + desired_display.length -2)
+                //         rolodex_execute = 1;
+                //     }
+                //     //reset rolodex execute
                         
                     
                     
-                }
+                // }
                 
                 
             });
@@ -279,13 +334,9 @@ var rolodex_execute; //to return how many times the data_collect function, this 
                 }
                 
                 if (action === 're_content'){
-                    
-                    if(isNaN(data)){
+
                         console.log(data);
-                    }
-                    else{
-                        console.log("trigger nothing hold back to index zero then contiune as off face",data);
-                    }
+                    
                 }
                 else {
                     console.log("michael element\n",michael);
