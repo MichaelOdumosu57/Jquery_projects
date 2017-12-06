@@ -1,16 +1,16 @@
-//used two variables for xml recotent purpose becuase there are too many case factors to only work with one direction
+//used two variables for xml recotent purpose becuase there are too many case factors now works with fully two way direction capability
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
 //             : 3d data consideration
-//             : semi-functional xml_recontent capability
-
+//             : fully functional xml_recontent capability
+//             : attribute options
 //
 
-// planned work: attribute options
-//             : easing functionality
-//             : order resort (if you built your items in one order and used another way to do it
-//             : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
+//
+// planned work : easing functionality
+//              : order resort (if you built your items in one order and used another way to do it
+//              : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
 
 
 //FIX rolodex_animation, parameters do not match up
@@ -201,7 +201,7 @@ var rolodex_execute_counterwise;
                 
                 if(desired_display != undefined){
 
-                    if(rolodex_execute_counterwise > desired_display.length - 1 ){
+                    if(rolodex_execute_counterwise > desired_display.length - 1 || rolodex_execute_counterwise == 0 ){
                         var i = 0;//counter to switch back to first
                         while (i != rolodex_set - desired_display.length) {
                             data_collect(1);
@@ -246,7 +246,7 @@ var rolodex_execute_counterwise;
                 consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
                 
                 if(desired_display != undefined){
-                    if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise < 0 ){
+                    if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise == 0 ){
                         rolodex_execute_clockwise = 0;
                         rolodex_execute_counterwise = 0;
                         
