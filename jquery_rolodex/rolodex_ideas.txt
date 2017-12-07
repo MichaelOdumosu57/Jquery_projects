@@ -11,3 +11,9 @@ how should the 3-d aspect work, is the face to the left, does 7 come before 2 or
 
 order
 if the rolodex items are disordered rolodex should be able to fix things
+
+chosen amount re_content
+instead of an ordered chosen, random rolodex items are chosen and while re_contenting, rolodex must know how to do it
+
+simple_z at certain points
+at certain point simple_z is disabled then re-enabled for more effects

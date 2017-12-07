@@ -1,0 +1,50 @@
+
+
+<html>
+    <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+
+
+        
+        
+        <script>
+            $(document).ready(function() {
+                var x_position = 50;
+                var y_position = 50;
+                $("button").click(function () {
+                    var i = 1;
+                    var distance      = 300,
+                        frames        = 30,
+                        current_frame = 0,
+                        time          = 1000,
+                        delta         = Math.floor(distance / frames),
+                        my_timer;
+                    
+                    my_timer = setInterval(function () {
+                        if (current_frame < frames) {
+                            var top = $("div").offset().top;
+                            var left = $("div").offset().left;
+                            $("div").offset({top: (top + delta), left : (left + delta)});
+                            console.log("animation");
+                        } else {
+                            clearInterval(my_timer);
+                        }
+                        current_frame++;
+                    }, Math.floor(time / frames));
+
+                })
+            });
+            
+
+        </script>
+    </head>
+    <body>
+            <h1> this is supposed to move every time the offset is changed, but it waits till the event is completed to move altogether</h1>
+            <button> on this click, the div should animate</button>
+            <div  style ="height: 300px; width:300px ; margin-top: 25px; text-align:center; margin-left:75px; background-color:grey"   >
+
+            </div>
+        
+    </body>
