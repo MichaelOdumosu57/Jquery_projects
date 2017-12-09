@@ -1,4 +1,4 @@
-//used two variables for xml recotent purpose becuase there are too many case factors now works with fully two way direction capability
+//getting to animate is very hard, my code runs in to execution violation handlers and overwrites code
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -37,18 +37,25 @@ var rolodex_execute_counterwise;
             
             
             // option control
-            if(michael.simple_3d == 'true'){
-                function simple_z_display (which,z_element){
-                    z_element[0].css("z-index",z_element[which][1][1].split(" ")[1]);
-                }
+            function z_display (which,z_element){
+                z_element[0].css("z-index",z_element[which][1][1].split(" ")[1]);
             }
+            if(michael.simple_3d == 'true'){
+
+            }
+            // rolodex changes with account for z-index, without it the face is always in front
             
             if(michael.animate == 'true'){
                 function rolodex_amination (animate_element) {
                     rolodex_movement_type = animate_element.animate;
                     // console.log(rolodex_movement_type);
                 }
+                function animate_wait(){
+                    return;
+                }
+                
             }
+            //rolodex eases instead of slides
             
 
                         
@@ -90,7 +97,7 @@ var rolodex_execute_counterwise;
                     }
                 }
             }
-
+            // rolodex rolls through chosen amount of rolodex items and skips the others
             
 
             data_collect(0);
@@ -108,17 +115,99 @@ var rolodex_execute_counterwise;
             function data_collect (direction = "none") {
                  rolodex_item = 0;
                  if (direction == 1 || direction == 2) {
-                    rolodex_array.forEach(function(rolodex_element){
-    
+                    rolodex_array.forEach(function(rolodex_element,i){
+                            
+                            
+                            rolodex_element[0].addClass(i.toString());
+                            // for animation purposes, for offset to differenatiate things
+
+
                             consoles(direction,rolodex_element);
-                            if(rolodex_amination !== undefined){
-                                rolodex_amination(rolodex_element[0]);
-                                rolodex_element[0].animate({
-                                        top:rolodex_element[direction][1][0].top,
-                                        left:rolodex_element[direction][1][0].left
+                            function animate_item () {
+                                $("." + i.toString()).offset(function(n,c) {
+                                    // console.log(c)
+                                    newPos = new Object();
+                                    // console.log(newPos)
+                                    var rate = (slowly.top - rolodex_element[direction][1][0].top)/ (slowly.left - rolodex_element[direction][1][0].left);
+                                    rate *= 5;
+                                    if (rate < 0){
+                                        rate += -(2*rate);
+                                    }
+                                    
+                                    // console.log(rate);
+                                    //animation will be done over rates, needs to know exact rate so that after the delay function the items are in the right place
+                                    newPos.top = slowly.top;
+                                    newPos.left = slowly.left;
+                                    
+                                    // console.log(difference)
+                                    
+                                        if (slowly.top - rolodex_element[direction][1][0].top > 0){
+                                            newPos.top -= 1/rate;
+                                            
+                                        }
+                                        else {
+                                            newPos.top += 1/rate;
+                                        }
                                         
-                                    });
+                                        if (slowly.left - rolodex_element[direction][1][0].left > 0){
+                                            newPos.left -= rate;
+                                        }
+                                        else{
+                                            newPos.left += rate;
+                                        }
+                                        
+                                        // console.log(difference)
+
+                                        wait(12);
+                                        return newPos;
+                                        // console.log(rolodex_element[0].offset())
+                                    
+                                        // break;
+                                    
+                                    
+                                    
+                                    
+                                    
+                                });
                             }
+                            if(michael.z_only == 'true'){
+                                z_display(direction,rolodex_element);
+
+                            }
+                            
+                            else if(rolodex_amination !== undefined){
+                                // console.log("hey")
+                                // rolodex_amination(rolodex_element[0]);
+                                var slowly;
+                                var difference ;
+                                // console.log(slowly.top - rolodex_element[direction][1][0].top)
+                                // console.log(slowly.left - rolodex_element[direction][1][0].left)
+
+                                    
+                                    while(true){
+                                        slowly = rolodex_element[0].offset();
+                                        difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
+                                        // console.log(difference)
+                                        // console.log($("." + i.toString()).offset().top)
+                                        if(  (difference < 1 && difference > 0) || (difference < 0 && difference > -1) ){
+                                            console.log("return final here")
+                                            rolodex_element[0].offset({ top:rolodex_element[direction][1][0].top,left:rolodex_element[direction][1][0].left});
+                                            break;
+                                            
+                                            
+                                            
+                                        }
+                                        else {
+                                            animate_item();
+                                            
+                                        }
+                                        
+                                    }
+                                
+                                
+
+                            }
+                            
                             
                             else {
 
@@ -127,9 +216,9 @@ var rolodex_execute_counterwise;
                                         left:rolodex_element[direction][1][0].left
                                     });
                             }
-                            if (simple_z_display !== undefined){
-                                consoles("simple_z_display",simple_z_display);
-                                simple_z_display(direction,rolodex_element);
+                            if (michael.simple_3d == 'true'){
+                                // consoles("simple_z_display",simple_z_display);
+                                z_display(direction,rolodex_element);
                             }
                             
 
@@ -197,7 +286,7 @@ var rolodex_execute_counterwise;
                 data_collect(1);
                 rolodex_execute_counterwise +=1;
                 rolodex_execute_clockwise -= 1;
-                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],0);
+                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],1);
                 
                 if(desired_display != undefined){
 
@@ -243,7 +332,7 @@ var rolodex_execute_counterwise;
                 data_collect(2);
                 rolodex_execute_clockwise += 1;
                 rolodex_execute_counterwise -= 1;
-                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
+                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],1);
                 
                 if(desired_display != undefined){
                     if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise == 0 ){
@@ -253,7 +342,7 @@ var rolodex_execute_counterwise;
                     }
                     if(rolodex_execute_clockwise == 1 || rolodex_execute_clockwise > desired_display.length){
                         var i = 0;//counter to switch back to first
-                        console.log(desired_display.length)
+                        // console.log(desired_display.length)
                         while (i != rolodex_set - desired_display.length) {
                             data_collect(2);
                             i +=1;
@@ -354,6 +443,14 @@ var rolodex_execute_counterwise;
                 }
             }
             //cant use console as function call
+            
+            function wait(ms){
+               var start = new Date().getTime();
+               var end = start;
+               while(end < start + ms) {
+                 end = new Date().getTime();
+              }
+            }
 
             consoles();
 
