@@ -1,4 +1,4 @@
-//breakthrough rolodex animation works perfectly on every thing execpt for xml_recontent, also if the event handler is hit before the rolodex can gather new data it breaks, the event needs to be called in async
+//breakthrough rolodex animation works perfectly on every thing execpt for xml_recontent only in a clockwise state, just to figure out the clockwise side and hope nothing breaks when both are used, then the work will be complete, animation only good for my process.html example
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -6,7 +6,7 @@
 //             : fully functional xml_recontent capability
 //             : attribute options
 //             : easing functionality works
-//                    :everything except xml_recontedt
+//                    :everything except xml_recontent in a clockwise fashion
 //                    :when time is given after each click
 
 //
@@ -45,16 +45,12 @@ var rolodex_execute_counterwise;
 
             
             
-            if(michael.animate == 'true'){
-                function rolodex_amination (animate_element) {
-                    rolodex_movement_type = animate_element.animate;
-                    // console.log(rolodex_movement_type);
-                }
+
                 function animate_wait(){
                     return;
                 }
                 
-            }
+            
             //rolodex eases instead of slides
             
 
@@ -115,93 +111,7 @@ var rolodex_execute_counterwise;
             
             function data_collect (direction = "none") {
                  rolodex_item = 0;
-                //  if (direction == 1 || direction == 2) {
-                //     rolodex_array.forEach(function(rolodex_element,i){
-                            
-                            
-                //             rolodex_element[0].addClass(i.toString());
-                //             // for animation purposes, for offset to differenatiate things
 
-
-                //             consoles(direction,rolodex_element);
-
-                //             if(michael.z_only == 'true'){
-                //                 z_display(direction,rolodex_element);
-
-                //             }
-                            
-                //             else if(rolodex_amination !== undefined){
-                //                     if (michael.simple_3d !== 'true'){
-                //                         z_display(direction,rolodex_element);
-                //                     }
-                //                 var y_dist =rolodex_element[0].offset().top - rolodex_element[direction][1][0].top;
-                //                 var x_dist = rolodex_element[0].offset().left - rolodex_element[direction][1][0].left;
-                //                 var frames = 55;
-                //                 var current_frame = 0;
-                //                 var time = 1000;
-                //                 var rate = y_dist/x_dist; //aka delta
-                //                 var other_rate = x_dist/y_dist;
-                //                 var difference =2 ;
-                //                 var slowly;
-                //                 var my_timer;
-                //                 if (rate < 0){
-                //                     rate += -(2*rate);
-                //                 }
-                //                 if (other_rate < 0) {
-                //                     other_rate += -(2*other_rate)
-                //                 }
-                //             my_timer = setInterval(function () {
-                //         if ( !(difference < 1 && difference > 0) || (difference < 0 && difference > -1)) {
-                //             difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
-                //                     newPos = new Object();
-                //                     slowly = rolodex_element[0].offset();
-                //                     newPos.top = slowly.top;
-                //                     newPos.left = slowly.left;
-                //                     if (slowly.top - rolodex_element[direction][1][0].top > 0){
-                //                         newPos.top -= rate;
-                //                     }
-                //                     else {
-                //                         newPos.top += rate;
-                //                     }
-                //                     if (slowly.left - rolodex_element[direction][1][0].left > 0){
-                //                         newPos.left -= other_rate;
-                //                     }
-                //                     else{
-                //                         newPos.left += other_rate;
-                //                     }
-                //                     $("." + i.toString()).offset({top:newPos.top,left:newPos.left});
-                                    
-                //         }
-                //         else  {
-                //             $("." + i.toString()).offset({
-                //                 top:rolodex_element[direction][1][0].top,
-                //                 left:rolodex_element[direction][1][0].left
-                //                 });
-                //             clearInterval(my_timer);
-                //         }
-                //         current_frame++;
-                //     }, 1);
-                //             // difference = 2;
-                //             }
-                            
-                            
-                //             else {
-                //                 rolodex_element[0].offset({
-                //                         top:rolodex_element[direction][1][0].top,
-                //                         left:rolodex_element[direction][1][0].left
-
-                //                     });
-                //                     if (michael.simple_3d !== 'true'){
-                //                         z_display(direction,rolodex_element);
-                //                     }
-                //                     // rolodex changes without account for z-index,   it the face is always in front
-                //             }
-
-                            
-
-    
-                //     });
-                //  }
                  //direction represent clockwise or counterclockwise functions, the offset is where the elements position is changed
  
             
@@ -259,7 +169,7 @@ var rolodex_execute_counterwise;
                 //always set to zero once data is sorted through, the items never changed in the order they were brought into the function, don't think of the items to be in a line think of them to be with seperate ID's
                 rolodex_execute += 1;
                 // console.log(rolodex_array);
-if (direction == 1 || direction == 2) {
+                if (direction == 1 || direction == 2) {
                     rolodex_array.forEach(function(rolodex_element,i){
                             
                             
@@ -274,7 +184,7 @@ if (direction == 1 || direction == 2) {
 
                             }
                             
-                            else if(rolodex_amination !== undefined){
+                            else if(michael.animate == 'true'){
                                     if (michael.simple_3d !== 'true'){
                                         z_display(direction,rolodex_element);
                                     }
@@ -348,49 +258,52 @@ if (direction == 1 || direction == 2) {
     
                     });
                  }
+                 //direction represent clockwise or counterclockwise functions, the offset is where the elements position is changed
             }
-            
+            var counterwise_reset;
+            var clockwise_reset;
+            if(michael.animate == 'true'){
+                counterwise_reset = 'false';
+                clockwise_reset = 'false';
+            }
+            //when true rolodex must bring face to orginal position these are flags
             $left.click( function () {
 
                 data_collect(1);
                 rolodex_execute_counterwise +=1;
                 rolodex_execute_clockwise -= 1;
+                
                 consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],1);
                 
                 if(desired_display != undefined){
+                    
+                    if(rolodex_execute_counterwise > desired_display.length - 2  ){
+                        michael.animate = 'false'
+                    }
+                    //to show animation effect from last selection to first selection while disabling animate to do the purpose of the xml_recontent functionality
 
                     if(rolodex_execute_counterwise > desired_display.length - 1 || rolodex_execute_counterwise == 0 ){
+
                         var i = 0;//counter to switch back to first
                         while (i != rolodex_set - desired_display.length) {
+                            if (i == (rolodex_set - desired_display.length) -1) {
+                                if(michael.animate == 'false' && counterwise_reset == 'false') {
+                                    michael.animate = 'true';
+                                }
+                                //enable animation function so it seems like the first was always after the last
+                            }
                             data_collect(1);
                             i +=1;
                         }
+
+
                     rolodex_execute_counterwise = 0;
                     rolodex_execute_clockwise = 0;
                     }
                 }
                 
                 
-                // if(desired_display !== undefined ){
-                //     console.log("ready to work");
-                //     var i = 0;// so desired display can reset
 
-                //     if (rolodex_execute_counterwise > desired_display.length -1 || rolodex_execute > desired_display.length -1 ){
-                //         console.log(rolodex_execute)
-                //         while(i != rolodex_set - (desired_display.length ) ){
-                //             data_collect(1);
-                //             i += 1;
-                            
-                //         }
-                //         rolodex_execute = 1;
-                //         rolodex_execute_counterwise = 0;
-                        
-                //     }
-                    
-                // }
-                
-                // && !(rolodex_execute >= rolodex_set - 1 && rolodex_execute <= rolodex_set + desired_display.length)
-                //didnt make counterwise work, if it was in middle of rolodex it messed up, plus worked for only
             
 
             
@@ -419,40 +332,6 @@ if (direction == 1 || direction == 2) {
                     
                     }
                 }
-
-                // if(desired_display !== undefined ){
-                //     // if (rolodex_execute_counterwise == 0){
-                //     //     rolodex_execute_counterwise = desired_display.length  ;
-                //     // }
-                //     console.log("ready to work");
-                //     var i = 0;// so desired display can reset
-                //     if( rolodex_execute >= 3 && rolodex_execute <= desired_display.length + 1 ){
-                //         consoles("re_content" ,rolodex_execute);
-                //         rolodex_execute -= 2;
-                        
-                        
-                        
-                //     }
-                //     //left was executed
-                //     else if (rolodex_execute < (rolodex_set + 2) - desired_display.length  ){
-                //         while(i != rolodex_set - (desired_display.length ) ){
-                //             data_collect(2);
-                //             i += 1;
-                            
-                //         }
-                //     }
-                //     //revert past dataless items to last data item, but bad conditional statement
-                                      
-                //     else if(rolodex_execute >= rolodex_set + desired_display.length - 2) {
-                //         console.log(rolodex_set + desired_display.length -2)
-                //         rolodex_execute = 1;
-                //     }
-                //     //reset rolodex execute
-                        
-                    
-                    
-                // }
-                
                 
             });
             //moves in counterclockwise function
