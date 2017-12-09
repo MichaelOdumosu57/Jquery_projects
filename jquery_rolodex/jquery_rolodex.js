@@ -1,4 +1,4 @@
-//getting to animate is very hard, my code runs in to execution violation handlers and overwrites code
+//used two variables for xml recotent purpose becuase there are too many case factors now works with fully two way direction capability
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -128,11 +128,20 @@ var rolodex_execute_counterwise;
                                     // console.log(c)
                                     newPos = new Object();
                                     // console.log(newPos)
-                                    var rate = (slowly.top - rolodex_element[direction][1][0].top)/ (slowly.left - rolodex_element[direction][1][0].left);
-                                    rate *= 5;
+                                    var nume =slowly.top - rolodex_element[direction][1][0].top;
+                                    var deom = slowly.left - rolodex_element[direction][1][0].left;
+                                    var rate = nume/deom;
+                                    var other_rate = deom/nume;
+                                    // rate *= 5;
                                     if (rate < 0){
                                         rate += -(2*rate);
                                     }
+                                    if (other_rate < 0) {
+                                        other_rate += -(2*other_rate)
+                                    }
+                                    var other_rate;
+                                    console.log(rate,nume,deom);
+
                                     
                                     // console.log(rate);
                                     //animation will be done over rates, needs to know exact rate so that after the delay function the items are in the right place
@@ -142,23 +151,23 @@ var rolodex_execute_counterwise;
                                     // console.log(difference)
                                     
                                         if (slowly.top - rolodex_element[direction][1][0].top > 0){
-                                            newPos.top -= 1/rate;
+                                            newPos.top -= rate;
                                             
                                         }
                                         else {
-                                            newPos.top += 1/rate;
+                                            newPos.top += rate;
                                         }
                                         
                                         if (slowly.left - rolodex_element[direction][1][0].left > 0){
-                                            newPos.left -= rate;
+                                            newPos.left -= other_rate;
                                         }
                                         else{
-                                            newPos.left += rate;
+                                            newPos.left += other_rate;
                                         }
                                         
                                         // console.log(difference)
 
-                                        wait(12);
+                                        
                                         return newPos;
                                         // console.log(rolodex_element[0].offset())
                                     
@@ -185,13 +194,17 @@ var rolodex_execute_counterwise;
 
                                     
                                     while(true){
+                                        
                                         slowly = rolodex_element[0].offset();
+                                        console.log(slowly)
                                         difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
                                         // console.log(difference)
                                         // console.log($("." + i.toString()).offset().top)
                                         if(  (difference < 1 && difference > 0) || (difference < 0 && difference > -1) ){
-                                            console.log("return final here")
+                                            
                                             rolodex_element[0].offset({ top:rolodex_element[direction][1][0].top,left:rolodex_element[direction][1][0].left});
+                                            console.log("return final here",rolodex_element[0].offset())
+                                            
                                             break;
                                             
                                             
