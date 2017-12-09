@@ -1,4 +1,4 @@
-//breakthrough rolodex animation almost works perfectly, only when the clockwise event gets back to the original position, counterwise does not know when to turn on amiation
+//breakthrough rolodex animation works perfectly both ways, used many conditional statements to give rolodex correct information on how to animate every rolodex item. Only thing is that when the animate option is turned off, the rolodex never experiences it
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -6,7 +6,6 @@
 //             : fully functional xml_recontent capability
 //             : attribute options
 //             : easing functionality works
-//                    :everything execpt specific clockwise case
 //                    :when time is given after each click
 
 //
@@ -277,9 +276,13 @@ var rolodex_execute_counterwise;
                 if(michael.animate == 'true' && clockwise_reset == 'was_true' && rolodex_execute_counterwise == 0 || rolodex_execute_counterwise == -1  ){
                     michael.animate = 'false';
                     
+                    
                 }
-
-                // michael.animate == 'true'
+                
+                else if( michael.animate == 'false' && clockwise_reset == 'was_true'){
+                    michael.animate = 'true';
+                }
+                //for when clockwise reset hits the first item and then switches to counterwise so michael.animate can be turned on
                 data_collect(1);
                 // consoles('rolodex_animate',[counterwise_reset,michael.animate,rolodex_execute],0);
                 rolodex_execute_counterwise +=1;
@@ -303,7 +306,7 @@ var rolodex_execute_counterwise;
                             if (i == (rolodex_set - desired_display.length) -1) {
                                 if(michael.animate == 'false' && counterwise_reset == 'true') {
                                     michael.animate = 'true';
-                                    console.log("hit here")
+
                                     
                                     
                                     
@@ -372,6 +375,7 @@ var rolodex_execute_counterwise;
                     
                     if(rolodex_execute_clockwise == 0 &&  clockwise_reset == 'true'){
                         michael.animate = 'false';
+                        console.log("hit here")
                         
                     }
                     
