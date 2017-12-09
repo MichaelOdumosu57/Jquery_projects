@@ -1,4 +1,4 @@
-//go to working on animation xml_recontent both ways, come into logic problem because I used one value for the two events
+//breakthrough rolodex animation almost works perfectly, only when the clockwise event gets back to the original position, counterwise does not know when to turn on amiation
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -6,7 +6,7 @@
 //             : fully functional xml_recontent capability
 //             : attribute options
 //             : easing functionality works
-//                    :everything except xml_recontent in a clockwise fashion
+//                    :everything execpt specific clockwise case
 //                    :when time is given after each click
 
 //
@@ -178,11 +178,14 @@ var rolodex_execute_counterwise;
 
 
                             consoles(direction,rolodex_element);
+                            
+                            console.log(michael.animate)
 
                             if(michael.z_only == 'true'){
                                 z_display(direction,rolodex_element);
 
                             }
+                            
                             
                             else if(michael.animate == 'true'){
                                     if (michael.simple_3d !== 'true'){
@@ -260,40 +263,50 @@ var rolodex_execute_counterwise;
                  }
                  //direction represent clockwise or counterclockwise functions, the offset is where the elements position is changed
             }
-            var counterwise_reset;
-            var clockwise_reset;
+            var counterwise_reset = undefined;
+            var clockwise_reset = undefined;
             if(michael.animate == 'true'){
                 counterwise_reset = 'false';
                 clockwise_reset = 'false';
             }
-            
-            
             //when true rolodex must bring face to orginal position these are flags
             $left.click( function () {
-            if(clockwise_reset = 'false'){
-                michael.animate = 'true';
-            }
+                // consoles('rolodex_animate',[,,,clockwise_reset],0);
+                counterwise_reset = 'true';
+                
+                if(michael.animate == 'true' && clockwise_reset == 'was_true' && rolodex_execute_counterwise == 0 || rolodex_execute_counterwise == -1  ){
+                    michael.animate = 'false';
+                    
+                }
 
+                // michael.animate == 'true'
                 data_collect(1);
+                // consoles('rolodex_animate',[counterwise_reset,michael.animate,rolodex_execute],0);
                 rolodex_execute_counterwise +=1;
                 rolodex_execute_clockwise -= 1;
                 
-                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],0);
+                // consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],1);
                 
                 if(desired_display != undefined){
                     
-                    if(rolodex_execute_counterwise > desired_display.length - 2  ){
-                        michael.animate = 'false'
+                    if(rolodex_execute_counterwise > desired_display.length - 2  &&  counterwise_reset == 'true'){
+                        michael.animate = 'false';
+                        
                     }
                     //to show animation effect from last selection to first selection while disabling animate to do the purpose of the xml_recontent functionality
 
                     if(rolodex_execute_counterwise > desired_display.length - 1 || rolodex_execute_counterwise == 0 ){
 
+                        
                         var i = 0;//counter to switch back to first
                         while (i != rolodex_set - desired_display.length) {
                             if (i == (rolodex_set - desired_display.length) -1) {
-                                if(michael.animate == 'false' && counterwise_reset == 'false') {
+                                if(michael.animate == 'false' && counterwise_reset == 'true') {
                                     michael.animate = 'true';
+                                    console.log("hit here")
+                                    
+                                    
+                                    
                                 }
                                 //enable animation function so it seems like the first was always after the last
                             }
@@ -305,52 +318,92 @@ var rolodex_execute_counterwise;
                     rolodex_execute_counterwise = 0;
                     rolodex_execute_clockwise = 0;
                     }
-                }
                 
+                }
+                // consoles('rolodex_animate',[counterwise_reset,michael.animate,rolodex_execute,clockwise_reset],0);
+                if(clockwise_reset == 'was_true'){
+                    rolodex_execute =0;
+                    clockwise_reset = 'false'
+                }
+                counterwise_reset = 'was_true';
                 
             });
             //moves in clockwise function
-            
-            if(clockwise_reset = 'false'){
-                michael.animate = 'false';
-            }
             $right.click(function () {
+
+                // consoles('rolodex_animate',[,,,counterwise_reset],0);
+                clockwise_reset = 'true';
+
+                if(rolodex_execute_clockwise == 0 &&  clockwise_reset == 'true'  ){
+                    michael.animate = 'false';
+                    
+                    
+                }
+                
+                
+                if(counterwise_reset == 'was_true'  && michael.animate == 'true'){
+                    michael.animate = 'false'
+                    // counterwise_reset = 'false'
+                    
+                }
+                //so when going from last to first animate turns off, to end up in the right place
+                
+                if( counterwise_reset == 'was_true' && rolodex_execute_clockwise != 0   ){
+                    michael.animate = 'true'
+                    
+                }
+                //so on clockwise animate turns on in appropriate places
+                console.log(rolodex_execute_clockwise,rolodex_execute_counterwise)
+                
+
                 
                 data_collect(2);
+                
                 rolodex_execute_clockwise += 1;
                 rolodex_execute_counterwise -= 1;
-                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
+                // consoles('re_content'   ,[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
                 
                 if(desired_display != undefined){
-                    
                     if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise == 0 ){
                         rolodex_execute_clockwise = 0;
                         rolodex_execute_counterwise = 0;
                         
                     }
-                  
-                    if(rolodex_execute_clockwise == 0){
+                    
+                    if(rolodex_execute_clockwise == 0 &&  clockwise_reset == 'true'){
                         michael.animate = 'false';
+                        
                     }
                     
+
                     
                     if(rolodex_execute_clockwise == 1 || rolodex_execute_clockwise > desired_display.length){
-                        michael.animate = 'false';
                         var i = 0;//counter to switch back to first
                         // console.log(desired_display.length)
+
                         while (i != rolodex_set - desired_display.length) {
                             if( i == (rolodex_set - desired_display.length) -1 ){
-                                if(michael.animate == 'false' && clockwise_reset == 'false'){
+                                if(michael.animate == 'false' && clockwise_reset == 'true'){
                                     michael.animate = 'true'
+                                    
+                                    
                                 }
+                                
                             }
                             data_collect(2);
                             i +=1;
                         }
+                        
                     
                     }
                 }
                 
+                // consoles('rolodex_animate',[clockwise_reset,michael.animate,rolodex_execute,counterwise_reset],0);
+                if(counterwise_reset == 'was_true'){
+                    rolodex_execute =0;
+                    counterwise_reset = 'false'
+                }
+                clockwise_reset = 'was_true';
             });
             //moves in counterclockwise function
             // console logs
@@ -392,6 +445,16 @@ var rolodex_execute_counterwise;
 
                         console.log(data);
                     
+                }
+                
+                if (action ==='rolodex_animate'){
+                    console.log("animation state");
+                    if(data[0] != undefined){
+                    console.log("reset", data[0]);
+                    console.log("animate ?",data[1]);
+                    console.log("times executed",data[2]);
+                    }
+                    console.log("did I revert",data[3]);
                 }
                 else {
                     console.log("michael element\n",michael);
