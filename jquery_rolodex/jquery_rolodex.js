@@ -1,14 +1,14 @@
-//used two variables for xml recotent purpose becuase there are too many case factors now works with fully two way direction capability
+//got animation effect going, but something happens to the rolodex arrays which ruins the whole extension, the set timeout interval is synchronus so I know all of its information is dynamically reformatting the array, its supposed to end with the right values, but with this amount of changes there is something wrong
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
 //             : 3d data consideration
 //             : fully functional xml_recontent capability
 //             : attribute options
-//
+//             : easing functionality only works on one click
 
 //
-// planned work : easing functionality
+// planned work
 //              : order resort (if you built your items in one order and used another way to do it
 //              : object.rolodex_item concept, what will happen is that if can pass any amout of objects to the rolodex, and rolodex will give each item its item class so rolodex know what to do with it
 
@@ -74,6 +74,7 @@ var rolodex_execute_counterwise;
             var decision_first = $.map($(this), function(value, index) {
                 return [[$(value),undefined]];
             });
+            // console.log(jQuery._data( ))
             
             //turns jquery selector to an array for compatability from initialization to rolodex use
             //returned as such 1, needs selector for jquery function compatability
@@ -123,102 +124,88 @@ var rolodex_execute_counterwise;
 
 
                             consoles(direction,rolodex_element);
-                            function animate_item () {
-                                $("." + i.toString()).offset(function(n,c) {
-                                    // console.log(c)
-                                    newPos = new Object();
-                                    // console.log(newPos)
-                                    var nume =slowly.top - rolodex_element[direction][1][0].top;
-                                    var deom = slowly.left - rolodex_element[direction][1][0].left;
-                                    var rate = nume/deom;
-                                    var other_rate = deom/nume;
-                                    // rate *= 5;
-                                    if (rate < 0){
-                                        rate += -(2*rate);
-                                    }
-                                    if (other_rate < 0) {
-                                        other_rate += -(2*other_rate)
-                                    }
-                                    var other_rate;
-                                    console.log(rate,nume,deom);
 
-                                    
-                                    // console.log(rate);
-                                    //animation will be done over rates, needs to know exact rate so that after the delay function the items are in the right place
-                                    newPos.top = slowly.top;
-                                    newPos.left = slowly.left;
-                                    
-                                    // console.log(difference)
-                                    
-                                        if (slowly.top - rolodex_element[direction][1][0].top > 0){
-                                            newPos.top -= rate;
-                                            
-                                        }
-                                        else {
-                                            newPos.top += rate;
-                                        }
-                                        
-                                        if (slowly.left - rolodex_element[direction][1][0].left > 0){
-                                            newPos.left -= other_rate;
-                                        }
-                                        else{
-                                            newPos.left += other_rate;
-                                        }
-                                        
-                                        // console.log(difference)
-
-                                        
-                                        return newPos;
-                                        // console.log(rolodex_element[0].offset())
-                                    
-                                        // break;
-                                    
-                                    
-                                    
-                                    
-                                    
-                                });
-                            }
                             if(michael.z_only == 'true'){
                                 z_display(direction,rolodex_element);
 
                             }
                             
                             else if(rolodex_amination !== undefined){
-                                // console.log("hey")
-                                // rolodex_amination(rolodex_element[0]);
+                                
+                                
+                                var y_dist =rolodex_element[0].offset().top - rolodex_element[direction][1][0].top;
+                                var x_dist = rolodex_element[0].offset().left - rolodex_element[direction][1][0].left;
+                                var frames = 55;
+                                var current_frame = 0;
+                                var time = 1000;
+                                var rate = y_dist/x_dist; //aka delta
+                                var other_rate = x_dist/y_dist;
+                                var difference =2 ;
                                 var slowly;
-                                var difference ;
-                                // console.log(slowly.top - rolodex_element[direction][1][0].top)
-                                // console.log(slowly.left - rolodex_element[direction][1][0].left)
+                                
+                                
+                                
+                                var my_timer;
 
+
+                                if (rate < 0){
+                                    rate += -(2*rate);
+                                }
+                                if (other_rate < 0) {
+                                    other_rate += -(2*other_rate)
+                                }
+                                
+
+                    my_timer = setInterval(function () {
+                        if ( !(difference < 1 && difference > 0) || (difference < 0 && difference > -1)) {
+                            difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
+                                    newPos = new Object();
+                                    slowly = rolodex_element[0].offset();
+
+
+                                    newPos.top = slowly.top;
+                                    newPos.left = slowly.left;
                                     
-                                    while(true){
-                                        
-                                        slowly = rolodex_element[0].offset();
-                                        console.log(slowly)
-                                        difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
-                                        // console.log(difference)
-                                        // console.log($("." + i.toString()).offset().top)
-                                        if(  (difference < 1 && difference > 0) || (difference < 0 && difference > -1) ){
-                                            
-                                            rolodex_element[0].offset({ top:rolodex_element[direction][1][0].top,left:rolodex_element[direction][1][0].left});
-                                            console.log("return final here",rolodex_element[0].offset())
-                                            
-                                            break;
-                                            
-                                            
-                                            
-                                        }
-                                        else {
-                                            animate_item();
-                                            
-                                        }
+
+                                
+                                    if (slowly.top - rolodex_element[direction][1][0].top > 0){
+                                        newPos.top -= rate;
                                         
                                     }
-                                
+                                    else {
+                                        newPos.top += rate;
+                                    }
+                                    
+                                    if (slowly.left - rolodex_element[direction][1][0].left > 0){
+                                        newPos.left -= other_rate;
+                                    }
+                                    else{
+                                        newPos.left += other_rate;
+                                    }
+                                    
+
+                                    $("." + i.toString()).offset({top:newPos.top,left:newPos.left});
+                                    console.log(difference )
+
+
+                        } else  {
+                            console.log("return final here", $("." + i.toString()).offset())
+                            clearInterval(my_timer);
+                        }
+                        current_frame++;
+                    }, Math.floor(time / frames));
+                    difference = 2;
+
+                                        
+                                // slowly = rolodex_element[0].offset();
+                                // difference = $("." + i.toString()).offset().top  - rolodex_element[direction][1][0].top;
+
+                                // console.log("wait executed")
                                 
 
+
+                                        
+                                    
                             }
                             
                             
@@ -295,7 +282,8 @@ var rolodex_execute_counterwise;
                 return rolodex_execute;
             }
             
-            $left.click(function () {
+            $left.click( function () {
+
                 data_collect(1);
                 rolodex_execute_counterwise +=1;
                 rolodex_execute_clockwise -= 1;
