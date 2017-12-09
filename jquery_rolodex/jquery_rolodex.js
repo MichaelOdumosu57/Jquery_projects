@@ -1,4 +1,4 @@
-//breakthrough rolodex animation works perfectly on every thing execpt for xml_recontent only in a clockwise state, just to figure out the clockwise side and hope nothing breaks when both are used, then the work will be complete, animation only good for my process.html example
+//go to working on animation xml_recontent both ways, come into logic problem because I used one value for the two events
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -266,14 +266,19 @@ var rolodex_execute_counterwise;
                 counterwise_reset = 'false';
                 clockwise_reset = 'false';
             }
+            
+            
             //when true rolodex must bring face to orginal position these are flags
             $left.click( function () {
+            if(clockwise_reset = 'false'){
+                michael.animate = 'true';
+            }
 
                 data_collect(1);
                 rolodex_execute_counterwise +=1;
                 rolodex_execute_clockwise -= 1;
                 
-                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],1);
+                consoles("re_content",[rolodex_execute_counterwise,rolodex_execute_clockwise],0);
                 
                 if(desired_display != undefined){
                     
@@ -303,29 +308,42 @@ var rolodex_execute_counterwise;
                 }
                 
                 
-
-            
-
-            
-                
             });
             //moves in clockwise function
+            
+            if(clockwise_reset = 'false'){
+                michael.animate = 'false';
+            }
             $right.click(function () {
+                
                 data_collect(2);
                 rolodex_execute_clockwise += 1;
                 rolodex_execute_counterwise -= 1;
-                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],1);
+                consoles("re_content",[rolodex_execute_clockwise,rolodex_execute_counterwise],0);
                 
                 if(desired_display != undefined){
+                    
                     if(rolodex_execute_clockwise >= desired_display.length || rolodex_execute_clockwise == 0 ){
                         rolodex_execute_clockwise = 0;
                         rolodex_execute_counterwise = 0;
                         
                     }
+                  
+                    if(rolodex_execute_clockwise == 0){
+                        michael.animate = 'false';
+                    }
+                    
+                    
                     if(rolodex_execute_clockwise == 1 || rolodex_execute_clockwise > desired_display.length){
+                        michael.animate = 'false';
                         var i = 0;//counter to switch back to first
                         // console.log(desired_display.length)
                         while (i != rolodex_set - desired_display.length) {
+                            if( i == (rolodex_set - desired_display.length) -1 ){
+                                if(michael.animate == 'false' && clockwise_reset == 'false'){
+                                    michael.animate = 'true'
+                                }
+                            }
                             data_collect(2);
                             i +=1;
                         }
