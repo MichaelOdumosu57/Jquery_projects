@@ -1,4 +1,4 @@
-//breakthrough rolodex animation works perfectly both ways, used many conditional statements to give rolodex correct information on how to animate every rolodex item. Only thing is that when the animate option is turned off, the rolodex never experiences it
+//additional bug fixes when animate conditionals interfere with options where aninate is not supposed to be
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -16,6 +16,17 @@
 
 //FIX rolodex_animation, parameters do not match up
 //global variables and functions
+
+//animate disablement
+// simple_3d,animate,z_only,xml_re_content
+  //at false, false, false, false all direction = check
+  //at true, false, false, false all direction = check
+  //at false,true, false, false all direction = check
+  //at false,false, true, false all direction  = check
+  //at false,false, false, true all direction  = check
+
+
+  
 var rolodex_array = new Array(); //to see what items the function is working with
 var z_array  = new Array(); //this variable sees what is facing to the front
 var rolodex_item = 0; //refers to the items in the rolodex
@@ -29,6 +40,8 @@ var rolodex_execute;
 var rolodex_execute_clockwise;
 var rolodex_execute_counterwise;
 //to return how many times the data_collect function, this is to keep track of the head as well as to help the xml_re_content attribute
+var rolodex_animate_disabled;
+
 
 
     
@@ -65,6 +78,7 @@ var rolodex_execute_counterwise;
             rolodex_execute = 0; //becuase at this point data collect will execute once
             rolodex_execute_clockwise = 0; //how many times the rolodex went clockwise and counter
             rolodex_execute_counterwise = 0;
+            
 
             var decision_first = $.map($(this), function(value, index) {
                 return [[$(value),undefined]];
@@ -95,6 +109,10 @@ var rolodex_execute_counterwise;
             }
             // rolodex rolls through chosen amount of rolodex items and skips the others
             
+            if(michael.animate != 'true'){
+                rolodex_animate_disabled = 'false'
+            }
+            //important check because the conditional turning on and off animation interefere with the off animation settings
 
             data_collect(0);
             //this finds out about the positions of every item, it is the control room loop, when the rolodex moves, the rolodex gets updated realtime with this
@@ -274,13 +292,18 @@ var rolodex_execute_counterwise;
                 counterwise_reset = 'true';
                 
                 if(michael.animate == 'true' && clockwise_reset == 'was_true' && rolodex_execute_counterwise == 0 || rolodex_execute_counterwise == -1  ){
-                    michael.animate = 'false';
+                    if(desired_display != undefined){
+                        michael.animate = 'false';
+                    }
+                    
                     
                     
                 }
                 
                 else if( michael.animate == 'false' && clockwise_reset == 'was_true'){
-                    michael.animate = 'true';
+                    if(rolodex_animate_disabled != 'false'){
+                        michael.animate = 'true';
+                    }
                 }
                 //for when clockwise reset hits the first item and then switches to counterwise so michael.animate can be turned on
                 data_collect(1);
@@ -305,8 +328,9 @@ var rolodex_execute_counterwise;
                         while (i != rolodex_set - desired_display.length) {
                             if (i == (rolodex_set - desired_display.length) -1) {
                                 if(michael.animate == 'false' && counterwise_reset == 'true') {
-                                    michael.animate = 'true';
-
+                                    if(rolodex_animate_disabled != 'false') {
+                                        michael.animate = 'true';
+                                    }
                                     
                                     
                                     
@@ -338,25 +362,30 @@ var rolodex_execute_counterwise;
                 clockwise_reset = 'true';
 
                 if(rolodex_execute_clockwise == 0 &&  clockwise_reset == 'true'  ){
-                    michael.animate = 'false';
-                    
+                    if(desired_display != undefined){
+                        michael.animate = 'false';
+                    }
+                    //so on no xml_recontent, clockwise animation works fine
                     
                 }
                 
                 
                 if(counterwise_reset == 'was_true'  && michael.animate == 'true'){
-                    michael.animate = 'false'
+                    if(desired_display != undefined){
+                        michael.animate = 'false'
+                    }
                     // counterwise_reset = 'false'
                     
                 }
                 //so when going from last to first animate turns off, to end up in the right place
                 
                 if( counterwise_reset == 'was_true' && rolodex_execute_clockwise != 0   ){
-                    michael.animate = 'true'
-                    
+                    if(rolodex_animate_disabled != 'false'){
+                        michael.animate = 'true'
+                    }
                 }
                 //so on clockwise animate turns on in appropriate places
-                console.log(rolodex_execute_clockwise,rolodex_execute_counterwise)
+                // console.log(rolodex_execute_clockwise,rolodex_execute_counterwise)
                 
 
                 
@@ -375,7 +404,7 @@ var rolodex_execute_counterwise;
                     
                     if(rolodex_execute_clockwise == 0 &&  clockwise_reset == 'true'){
                         michael.animate = 'false';
-                        console.log("hit here")
+
                         
                     }
                     
@@ -388,8 +417,9 @@ var rolodex_execute_counterwise;
                         while (i != rolodex_set - desired_display.length) {
                             if( i == (rolodex_set - desired_display.length) -1 ){
                                 if(michael.animate == 'false' && clockwise_reset == 'true'){
-                                    michael.animate = 'true'
-                                    
+                                    if(rolodex_animate_disabled != 'false'){
+                                        michael.animate = 'true'
+                                    }
                                     
                                 }
                                 
