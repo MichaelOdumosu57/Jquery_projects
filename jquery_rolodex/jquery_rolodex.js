@@ -1,4 +1,4 @@
-//additional bug fixes when animate conditionals interfere with options where aninate is not supposed to be
+//additional bug fixes , the event controls hide theirselves for the animation to complete and not to break
 //capabilities : place any amount of items into rolodex
 //             : rolodex clockwise core functionality
 //             : rolodex counterclockwise core functionality
@@ -41,6 +41,7 @@ var rolodex_execute_clockwise;
 var rolodex_execute_counterwise;
 //to return how many times the data_collect function, this is to keep track of the head as well as to help the xml_re_content attribute
 var rolodex_animate_disabled;
+var event_execution;
 
 
 
@@ -133,8 +134,8 @@ var rolodex_animate_disabled;
  
             
 
-            // console.log(rolodex_array);
-            // wait(500)
+            
+            
             if (direction == 1 || direction == 2) {
                 decision = rolodex_array;
                 
@@ -287,7 +288,14 @@ var rolodex_animate_disabled;
                 clockwise_reset = 'false';
             }
             //when true rolodex must bring face to orginal position these are flags
-            $left.click( function () {
+
+            
+            $left.click( function (event) {
+                if(rolodex_animate_disabled != 'false'){
+                    $(this).hide();
+                    $right.hide();
+                }
+                
                 // consoles('rolodex_animate',[,,,clockwise_reset],0);
                 counterwise_reset = 'true';
                 
@@ -354,10 +362,36 @@ var rolodex_animate_disabled;
                 }
                 counterwise_reset = 'was_true';
                 
+                if(rolodex_animate_disabled != 'false'){
+                    
+                    // wait(500);
+                    $(this).show(5000);
+                    $right.show(5000);
+                }
+                // so that rolodex can move in place without interupption
+                
+                
             });
             //moves in clockwise function
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             $right.click(function () {
-
+                if(rolodex_animate_disabled != 'false'){
+                    $(this).hide();
+                    $left.hide();
+                }
+                //disabled the problem of repeated clicking
                 // consoles('rolodex_animate',[,,,counterwise_reset],0);
                 clockwise_reset = 'true';
 
@@ -438,6 +472,12 @@ var rolodex_animate_disabled;
                     counterwise_reset = 'false'
                 }
                 clockwise_reset = 'was_true';
+                if(rolodex_animate_disabled != 'false'){
+                    console.log(rolodex_animate_disabled)
+                    // wait(500);
+                    $(this ).show(5000);
+                    $left.show(5000);
+                }
             });
             //moves in counterclockwise function
             // console logs
