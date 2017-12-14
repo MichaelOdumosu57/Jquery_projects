@@ -1,5 +1,6 @@
-//  all parallax items are able to stick to the screen when they reach they offset position, their window scroll top position seems to be related to their css "top" attribute, and when you subtract their window scroll offset from the number of that attribute that seems to be the true position of the parallax item
+// here the parallax is able to stop once it gets to the end of its reach but its not able to move with the rest of the page, it might be because it my example the title is fixed, might have to put in in its own parallax, but the scrolling should stop once the parallax closes to be left under the title or the title needs to move
 
+    
     //capabilities:core parallax functionality
     //            : paralllax items stick to the screen once they get to the offset points
     //            : functionality applied to multiple parallax items
@@ -7,6 +8,7 @@
     //planned work :
     //             : universial understanding and appliacation of the parallax
     //             : smoothening of the parallax animation
+    //             : object screen vsibility detection
     
 var its_ok = 0;
 //global variables
@@ -24,10 +26,10 @@ var its_ok = 0;
             
             function react_on_scroll_offset() {
                 
-                    // if ($(window).scrollTop() >= 1044)  {
-                    //     console.log("got hit")
-                    //     return;
-                    // }
+                    if ($(window).scrollTop() >= 1044)  {
+                        console.log("got hit")
+                        return;
+                    }
                     //this is the end reach of the parallax
                     
                         var move = 0;
