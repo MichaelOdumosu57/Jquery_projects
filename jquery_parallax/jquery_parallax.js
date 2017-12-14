@@ -1,9 +1,9 @@
-// here the parallax is able to stop once it gets to the end of its reach but its not able to move with the rest of the page, it might be because it my example the title is fixed, might have to put in in its own parallax, but the scrolling should stop once the parallax closes to be left under the title or the title needs to move
+//   here the above items are taken into account as an unfix attribute you must put as an array, this takes at most one item and fixes it once the parallax is done
 
-    
     //capabilities:core parallax functionality
     //            : paralllax items stick to the screen once they get to the offset points
     //            : functionality applied to multiple parallax items
+    //            : non-parallax items treat object as a static object
     
     //planned work :
     //             : universial understanding and appliacation of the parallax
@@ -17,6 +17,11 @@ var its_ok = 0;
         parallax:function(michael){
             //a parallax is hard to explain in the real world but on a screen each parallax item slides regularly on the screen to a certain point, where it is then covered by the next parallax object to a certain point
 
+
+            if(michael.unfix != undefined){
+                consoles("unfix",michael.unfix,0)
+                
+            }
             var parallax_array = $.map($(this), function(value, index) {
                 return [$(value)];
             });
@@ -24,11 +29,26 @@ var its_ok = 0;
             consoles("scrollTop",$(window).scrollTop())
             consoles("distance",[parallax_array[1].offset().top - $(".parallax:first > div > h1").offset().top ,$(".parallax:first > div > h1").css("height")])
             
+            var unfix_move = parseFloat(michael.unfix[0].css("top").split("p")[0])
+            var unfix_left_set = michael.unfix[0].css("left")
+            console.log(unfix_move)
             function react_on_scroll_offset() {
                 
                     if ($(window).scrollTop() >= 1044)  {
-                        console.log("got hit")
+                        var move = unfix_move;
+                        consoles("unfix",michael.unfix,0);
+                        michael.unfix[0].css("position","relative")
+                        move += (1044-338)/150;
+                        michael.unfix[0].css({"top":move.toString() + "em","left":"0em"})
+                        
                         return;
+                    }
+                    //to stop the above items from moving and move along and treat the parallax like a big static object
+                        //the math in move involves taking the final from the first, because thats where it belongs
+                    else{
+                        michael.unfix[0].css("top",unfix_move.toString() + "px")
+                        // console.log(michael.unfix[0].css("left"))
+                        michael.unfix[0].css({"position":"fixed","left":unfix_left_set})
                     }
                     //this is the end reach of the parallax
                     
@@ -37,12 +57,13 @@ var its_ok = 0;
                         parallax_array[0].css("top",move.toString() + "em")
                         consoles("coordinates",parallax_array,0);
                         console.log( $(window).scrollTop())
+                        console.log(michael.unfix[0].css("top"))
                         //the first must not be limited in order for the parallax to work accordingly
                     if ($(window).scrollTop() >= 338)  {
                         var move = 0;
                         move += ($(window).scrollTop()-338)/15;
                         parallax_array[1].css("top",move.toString() + "em")
-                        consoles("coordinates",parallax_array,0);
+                        // consoles("coordinates",parallax_array,0);
 
                     }
                     
@@ -50,7 +71,7 @@ var its_ok = 0;
                         var move = 0;
                         move += ($(window).scrollTop()-671)/15;
                         parallax_array[2].css("top",move.toString() + "em")
-                        consoles("coordinates",parallax_array,0);
+                        // consoles("coordinates",parallax_array,0);
 
                     }
                     
@@ -58,7 +79,7 @@ var its_ok = 0;
                         var move = 0;
                         move += ($(window).scrollTop()-996)/15;
                         parallax_array[3].css("top",move.toString() + "em")
-                        consoles("coordinates",parallax_array,0);
+                        // consoles("coordinates",parallax_array,0);
 
                     }
                     // if ($(window).scrollTop() >= 166)  {
@@ -85,7 +106,7 @@ var its_ok = 0;
                     //     parallax_array[3].css("top",($(window).scrollTop()/10).toString() + "em")
                     // }
 
-                wait(50)
+                wait(0)
             }
             
             $(window).scroll(react_on_scroll_offset);
@@ -115,6 +136,13 @@ var its_ok = 0;
                 if(action == "coordinates"){
                     data.forEach(function (selection,i) {
                         console.log(i,selection.css("top"))
+                    })
+                }
+                
+                if(action == "unfix"){
+                    
+                    data.forEach(function (selection,i) {
+                        console.log("what i need to move",i,selection.css("top"), $(window).scrollTop())
                     })
                 }
                 
