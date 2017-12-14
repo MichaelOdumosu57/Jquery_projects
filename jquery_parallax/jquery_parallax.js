@@ -1,4 +1,4 @@
-//  here parallax is now able to sense when window moves
+//  here core parallax functionality is at play, but it has not been programmed to work universally, a deep understanding of the mathematics of the scoll coordinates to trigger proper functionality needs to be understood in order to upgrade this program
 
     //capabilities
     
@@ -20,39 +20,46 @@ var its_ok = 0;
             
             function react_on_scroll_offset() {
                 
-                    if ($(window).scrollTop() >= 66)  {
-                        // parallax_array[0].css({"position":"fixed","left":"7.2%","top":"25%"});
-                        // parallax_array[0].offset({top:15,left:25})
-                        
-                        var move = 5;
-                        move += $(window).scrollTop()/10000;
+                    if ($(window).scrollTop() <= 66)  {
+                        var move = 0;
+                        move += $(window).scrollTop()/10;
                         parallax_array[0].css("top",move.toString() + "em")
-                        console.log(parallax_array[0].css("top"))
+                        // console.log(parallax_array[0].css("top"),$(window).scrollTop())
+                        
 
                     }
-    
-                    // if ($(window).scrollTop() >= 104)  {
-                    //     parallax_array[1].css({"position":"fixed","left":"7.2%","top":"50%"});
-                    //     // parallax_array[0].offset({top:15,left:25})
-                    // }
-                    // if ($(window).scrollTop() >= 159)  {
-                    //     parallax_array[2].css({"position":"fixed","left":"7.2%","top":"75%"});
-                    //     // parallax_array[0].offset({top:15,left:25})
-                    // }
-                    // if ($(window).scrollTop() >= 204)  {
-                    //     parallax_array[3].css({"position":"fixed","left":"7.2%","top":"95%"});
-                    //     // parallax_array[0].offset({top:15,left:25})
-                    // }
+                    if ($(window).scrollTop() <= 146)  {
+                        var move = 0;
+                        move -= $(window).scrollTop()/10;
+                        parallax_array[1].css("top",move.toString() + "em")
+                        console.log(parallax_array[1].css("top"),$(window).scrollTop())
+
+                    }
+                    if ($(window).scrollTop() <= 366)  {
+                        var move = 0;
+                        move -= $(window).scrollTop()/10;
+                        parallax_array[2].css("top",move.toString() + "em")
+                        // console.log(parallax_array[2].css("top"),$(window).scrollTop())
+
+                    }
+                    if ($(window).scrollTop() <= 906)  {
+                        var move = 0;
+                        move -= $(window).scrollTop()/10;
+                        parallax_array[3].css("top",move.toString() + "em")
+                        // console.log(parallax_array[2].css("top"),$(window).scrollTop())
+
+                    }
+
 
             }
             
             $(window).scroll(react_on_scroll_offset);
 
-            $(window).on("scroll",function () {
-                console.log("jacob");
-            })
+            // $(window).on("scroll",function () {
+            //     // console.log("jacob");
+            // })
 
-            
+            //seems not to need the event action anymore can do it on its own
             
             function consoles(action = "none",data = undefined,debug = its_ok) {
                 if(debug !== 0){
