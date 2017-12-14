@@ -1,9 +1,11 @@
-//  here core parallax functionality is at play, but it has not been programmed to work universally, a deep understanding of the mathematics of the scoll coordinates to trigger proper functionality needs to be understood in order to upgrade this program
+//  here paralllax items stick to the screen once they get to the offset points, but when to return their selves they stay at the bottom of the page
 
-    //capabilities
+    //capabilities:core parallax functionality
+    //             paralllax items stick to the screen once they get to the offset points
     
-    //planned work : core parallax functionality
-    
+    //planned work : functionality applied to multiple parallax items
+    //             : universial understanding and appliacation of the parallax
+    //             : smoothening of the parallax animation
     
 var its_ok = 0;
 //global variables
@@ -17,38 +19,51 @@ var its_ok = 0;
             });
             consoles("parallax_items",[$(this),parallax_array],1);
             consoles("scrollTop",$(window).scrollTop())
+            consoles("distance",[parallax_array[1].offset().top - $(".parallax:first > div > h1").offset().top ,$(".parallax:first > div > h1").css("height")])
             
             function react_on_scroll_offset() {
                 
-                    if ($(window).scrollTop() <= 66)  {
+                    if ($(window).scrollTop() <= 938)  {
                         var move = 0;
-                        move += $(window).scrollTop()/10;
+                        move += $(window).scrollTop()/15;
                         parallax_array[0].css("top",move.toString() + "em")
-                        // console.log(parallax_array[0].css("top"),$(window).scrollTop())
-                        
-
+                        consoles("coordinates",parallax_array,0);
+                        console.log( $(window).scrollTop())
                     }
-                    if ($(window).scrollTop() <= 146)  {
+                    
+                    // if ($(window).scrollTop() >= 86)  {
+                    //     parallax_array[0].css("top",($(window).scrollTop()/10).toString() + "em")
+                    // }
+                    if ($(window).scrollTop() >= 338)  {
                         var move = 0;
-                        move -= $(window).scrollTop()/10;
+                        move += ($(window).scrollTop()-338)/15;
                         parallax_array[1].css("top",move.toString() + "em")
-                        console.log(parallax_array[1].css("top"),$(window).scrollTop())
+                        consoles("coordinates",parallax_array,0);
 
                     }
-                    if ($(window).scrollTop() <= 366)  {
-                        var move = 0;
-                        move -= $(window).scrollTop()/10;
-                        parallax_array[2].css("top",move.toString() + "em")
-                        // console.log(parallax_array[2].css("top"),$(window).scrollTop())
+                    // if ($(window).scrollTop() >= 166)  {
+                    //     parallax_array[1].css("top",($(window).scrollTop()/10).toString() + "em")
+                    // }
+                    // if ($(window).scrollTop() <= 366)  {
+                    //     var move = 0;
+                    //     move -= $(window).scrollTop()/10;
+                    //     parallax_array[2].css("top",move.toString() + "em")
+                    //     // console.log(parallax_array[2].css("top"),$(window).scrollTop())
 
-                    }
-                    if ($(window).scrollTop() <= 906)  {
-                        var move = 0;
-                        move -= $(window).scrollTop()/10;
-                        parallax_array[3].css("top",move.toString() + "em")
-                        // console.log(parallax_array[2].css("top"),$(window).scrollTop())
+                    // }
+                    // if ($(window).scrollTop() >= 366)  {
+                    //     parallax_array[2].css("top",($(window).scrollTop()/10).toString() + "em")
+                    // }
+                    // if ($(window).scrollTop() <= 906)  {
+                    //     var move = 0;
+                    //     move -= $(window).scrollTop()/10;
+                    //     parallax_array[3].css("top",move.toString() + "em")
+                    //     // console.log(parallax_array[2].css("top"),$(window).scrollTop())
 
-                    }
+                    // }
+                    // if ($(window).scrollTop() >= 906)  {
+                    //     parallax_array[3].css("top",($(window).scrollTop()/10).toString() + "em")
+                    // }
 
 
             }
@@ -73,6 +88,15 @@ var its_ok = 0;
                     console.log(data)
                 }
                 
+                if(action == "distance"){
+                    console.log(data)
+                }
+                
+                if(action == "coordinates"){
+                    data.forEach(function (selection,i) {
+                        console.log(i,selection.css("top"))
+                    })
+                }
                 
                 
             }
