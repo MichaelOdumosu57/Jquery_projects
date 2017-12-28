@@ -1,0 +1,1 @@
+should make each parallax item click and bring to the front of the page
