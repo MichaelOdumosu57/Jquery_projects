@@ -1,12 +1,14 @@
-// in this version adv_clone makes as many clones as the user specifies
+// in this version repeated calls to adv clone brings the proper amount of clones to the page except when its one or two then its gets buggey
     //capabilities:core cloning functionality
-    //            : responds if user input is less than 3
     //            : cloning as many items as needed
     //            : returns a length of all the clones
+    //            : responds if user input is greater than 2 or 0 for single function calls, and multiple              function calls
+    //            : return an array of all the desired clones
 
     
-    //planned work : simple init cloning, jquery needs to have an object with a clone() on the original clone to work              properly
-    //              : return an array of all the desired clones
+    //planned work : work on multiple calls for one and two
+    
+
     
     
     // far in the future
@@ -23,10 +25,14 @@
                 //determining argument type
                 if(typeof(michael) == "number"){
                     var count  = michael;
+                    
+                    // michael += 1;
+                    
                 }
                 
-                ////////////////////////////////////////////////////////////////
                 
+                ////////////////////////////////////////////////////////////////
+                //becuase we will be removing the first item
                 ////////////////////////////////////////////////////////////////
             
                 //if its zero should we throw an error or delete the selection
@@ -36,29 +42,46 @@
                 }
                 
                 ////////////////////////////////////////////////////////////////
+                
+                
             
                 //replication init
-                var $clone = $(this).clone();
+                var clone_selector = this.selector + ":last";
+                var $clone = $(clone_selector).clone();
                 if($clone_count > -3 ){
-                    $(this).after($clone);
+                    $(clone_selector).after($clone);
+                    console.log("made a clone with $clone ",$(this.selector).length)
                 }
+                //to delete the additional clone, the first clone
+                
+                    var first_selector = this.selector + ":first";
+                    $(first_selector).addClass("delete");
+                    $(".delete").hide()
+                
+                ////////////////////////////////////////////////////////////////////
+                
+                ///////////////////////////////////////////////////////////////////
                 var $clone_clone  =  $clone.clone();
-                var $last_clone = $(this.selector + ":last" );
+                var $last_clone = $(clone_selector  );
+                
                 if($clone_count > -2){
                     $last_clone.after($clone_clone);
+                    console.log("made a clone with $clone_clone",$(this.selector).length)
                     
                 }
-
+                $clone_count += 1;   //becuase additional calls are making x-1 calls, beucase one is already present
                 while($clone_count >= 0){
                     $last_clone.after($last_clone.clone());
+                    console.log("made a clone with $last_clone",$(this.selector).length)
                     $clone_count -= 1;
                 }
+                    
+                    
                 
-            var decision_first = $.map($(this), function(value, index) {
-                return [[$(value),undefined]];
-            });
                 
-                return $.map($(this.selector),function(value,index){
+
+                
+                return $.map($(this.selector + (":not(.delete)")),function(value,index){
                    return $(value)
                 });
                     
