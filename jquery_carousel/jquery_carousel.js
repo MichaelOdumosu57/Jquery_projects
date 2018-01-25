@@ -1,9 +1,14 @@
-//this function achieves the main sliding and replacement functionality
+//this function achieves choice options strung down to one event handler to avoid repetition
     //capabilities:left sliding and replacement functionality
-
+    //            :dual options
 
     
     //planned work : full carousel funcitonality
+    
+
+    
+    
+
     
 
 var call = 0;
@@ -68,23 +73,17 @@ var call_amounts = [];
             //the moving process
 {
 
-            $(michael.left).click(function(){
+            $(".carousel_option").click(function(){
                 $(this).addClass("carousel_choice");
                 $(this).hide();
                 $(".carousel_choice").trigger("option_click");
+                $(this).removeClass("carousel_choice");
                 $(this).show(michael.rate + refresh);
                 
                 
 
             })
-            
-            $(michael.right).click(function(){
-                $(this).addClass("carousel_choice");
-                $(this).hide();
-                $(".carousel_choice").trigger("option_click");
-                $(this).show(michael.rate + refresh);
-                
-            })
+
             
             $("body").append("<e class = 'carousel_choice'></e> ");
             
