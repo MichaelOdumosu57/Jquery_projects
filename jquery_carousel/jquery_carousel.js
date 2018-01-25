@@ -1,31 +1,44 @@
-//this function achieves choice options strung down to one event handler to avoid repetition
+//this function wraps all carousel items into one carousel div to keep it seperate from the rest of the page and enable it to display on smallaer scales
     //capabilities:full carousel functionality
     //            :dual options
 
     
     //planned work : putting more than one item into carousel
+    //             : you must avoid using carousel in any variables, functions, obejcts or arguments as this could ruin the extensions functionalty, especially             using carousel choice as a class in a div, im working on this
     
+    // mandatory argument properites
+    //  height, height of carousel container
+    //  width, width of carousel container
 
-    //argument properites
+    // optional argument properites
     //  left, the item that controls the left moving functionality,must be a string that jquery can select the element with
     //  right, the item that controls the right moving functionality,must be a string that jquery can select the element with
     //  rate, rate at which the carousel moves
+    
+    
+
 
     
 
 var call = 0;
 var call_amounts = [];
+
+
     jQuery.fn.extend({
         carousel:function(michael){
             // bootstrap has a carousel function but you need the bootstrap.js file to use it which can cause problems, this takes a selector of supposed associated objects for the carousel  along with left and right event control selectors to have the carousel animation
             
             //argument check and initization
-            if (michael.rate === undefined){
-                michael.rate = 500;
+            if (isNaN(michael.rate)){
+                michael.rate = 1000;
             }
             var refresh = 1;
+            console.log(michael.width,michael.height)
             $(michael.left).addClass("carousel_option")
             $(michael.right).addClass("carousel_option")
+            $("body").append("<div class = 'carousel_choice'></div> ");
+            
+
             ///////////////////////////////////////////////////////////////////////////////////
             // making the moving algorithm much simpler and concise
             ///////////////////////////////////////////////////////////////////////////////////
@@ -57,15 +70,20 @@ var call_amounts = [];
                     "left":carousel_spacing * index,
                     "top" : -(carousel_item_height * index),
                     "margin-bottom":0
-                    }).addClass("carousel_item");
+                    }).addClass("carousel_item").appendTo($("div.carousel_choice"));
                         
                  carousel_item_top = numberParse($(value).css("top"));
                 
                 return [[$(value),carousel_item_left_position,carousel_item_top]];
 
             });
-            
+            $("div.carousel_choice").css({
+                height:michael.height,
+                width:michael.width,
+                overflow:"hidden"
+            })
             carousel_item_max_left = numberParse($($(this).selector + ":last").css("left"));
+            
             console.log(carousel_list,browser_window.outerWidth,carousel_item_max_left)
 }
             ///////////////////////////////////////////////////////////////////////////////////
@@ -93,9 +111,9 @@ var call_amounts = [];
             })
 
             
-            $("body").append("<e class = 'carousel_choice'></e> ");
             
-            var info;
+            
+            var carousel_info;
             
             $(".carousel_choice").on("option_click",function() {
                 
@@ -147,11 +165,11 @@ var call_amounts = [];
                 //finding out who got clicked
                 if(carousel_selected["0"] == $(michael.left)["0"]){
                     console.log("LEFT");
-                    info = "-=";
+                    carousel_info = "-=";
                 }
                 if(carousel_selected["0"] == $(michael.right)["0"]){
                     console.log("RIGHT");
-                    info = "+=";
+                    carousel_info = "+=";
                 }
                 
                 
@@ -161,7 +179,7 @@ var call_amounts = [];
                 var carousel_item_prev_position = []
 
                 carousel_list.forEach(function(value){
-                    if (info == "+="){
+                    if (carousel_info == "+="){
                         
                        if(numberParse(value[0].css("left")) >= carousel_item_max_left ){
                            console.log("hit")
@@ -177,11 +195,11 @@ var call_amounts = [];
                     
     
                    value[0].animate({
-                       left:info + browser_window.outerWidth.toString()
+                       left:carousel_info + browser_window.outerWidth.toString()
                    },michael.rate);
                    carousel_item_prev_position.push(numberParse(value[0].css("left")));
                    
-                   carousel_item_next_position.push(carousel_operators[info](numberParse(value[0].css("left")),browser_window.outerWidth));
+                   carousel_item_next_position.push(carousel_operators[carousel_info](numberParse(value[0].css("left")),browser_window.outerWidth));
     
     
                    
@@ -193,7 +211,7 @@ var call_amounts = [];
                 console.log("carousel_item_next_position");
                 console.log(carousel_item_next_position);
                 
-                carousel_repositioner[info]();
+                carousel_repositioner[carousel_info]();
             
             });
 
