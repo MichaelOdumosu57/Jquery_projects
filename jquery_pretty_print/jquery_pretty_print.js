@@ -1,6 +1,7 @@
 
-//this version can pretty print horizontally and provide custom spacing
+//this version can vertical reposition proper alginment of objects, place all in one proper row
     //capabilities : core pretty print concept in horizontal spacing
+    //             : vertical reposition proper alginment
 
     
     //planned work : detection of objects
@@ -14,6 +15,7 @@
     //             : pretty print fine tuning
     //              : detection of outer objects that do not belong in pretty print
     //              : amimatable detection, if not proper steps would be made to enable it without interfering in front end design
+    //              : return error if obejcts cant be pretty printed inside
     
     // properties
     
@@ -68,17 +70,19 @@ var call = 0;
             
             // setting and arraging objects
 {
-
-                
             var space = michael.spacing;
+            var pretty_print_height;
             var pretty_print_start = {"x":0,"y":0};
             var pretty_print = $.map(michael.objects,function (pretty_object,index) {
                 
+                pretty_print_height = numberParse($(pretty_object).css("height"));
                 $(pretty_object).css({
                     "position":"relative",
-                    "left":pretty_print_start["x"]
+                    "left":pretty_print_start["x"],
+                    "top":pretty_print_start["y"] - (pretty_print_height * index)
                 })
-                console.log($(pretty_object).css("left"), pretty_print_start["x"] ,space)
+                // console.log($(pretty_object).css("left"), pretty_print_start["x"] ,space)
+                console.log($(pretty_object).css("top"), pretty_print_start["y"] ,pretty_print_height)
                 pretty_print_start["x"] += numberParse($(pretty_object).css("width")) + space
                 return $(pretty_object)
             })
@@ -91,6 +95,7 @@ var call = 0;
             // var pretty_print_start is going to be the basis of the positioning of the objects, it is an object the first number being the x and the second the y
             // var space desired space between objects
             // all objects must be have a position:relative attribute to be position properly inside the object
+            // var pretty_print_height will contain the height of each object, in the future this variable will contain the height of the object with max height
             //////////////////////////////////////////////////////////////
         }
         
