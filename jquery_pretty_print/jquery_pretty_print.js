@@ -1,13 +1,14 @@
 
-//this version can indent, set a leftover, cannot center but is able to react when the objects start to leave the container and put them on the next line
+//vertical and horizionatal positioning achieved
     //capabilities : core pretty print concept in horizontal spacing
     //             : vertical reposition proper alginment
     //              :indentation, or pretty_print usuable space object
     //              :recognintion of overstepping horizontal bounds
+    //             : full object pretty print conept
 
     
-    //planned work :
-    //             : full object pretty print
+    //planned work
+    //             : horizontal and vertical alignment
     
 
     
@@ -23,7 +24,8 @@
     // properties
     
     //objects -- contains all the obejcts desired to be pretty printed, in the order of input, we could build customization but that is a waste of time and space, if michael is not an object this can be the only argumen
-    // spacing -- amount of space between each object in pretty print, this is needed as row creation of how many objects are in the row depends on it, if you don't place one its default is 20
+    // x_spacing -- amount of horizontal space between each object in pretty print, this is needed as row creation of how many objects are in the row depends on it, if you don't place one its default is 20
+    // y_spacing -- amount of vertical space between each object in pretty print, this is needed as row creation of how many objects are in the row depends on it, if you don't place one its default is 10
     // leftover -- decides how much leftover there will be for the last item in the row and the end width of the container object
     // indent -- decides initial space for row starting, now it 4% because all containers are different
     
@@ -63,12 +65,19 @@ var call = 0;
                 michael.objects = michael;
                 
             }
-            if(michael.spacing === undefined){
-                michael.spacing = 20;
+            if(michael.x_spacing === undefined){
+                michael.x_spacing = 20;
             }
             else{
-                $(".pretty").css("width",michael.spacing)
-                michael.spacing = numberParse($(".pretty").css("width"))
+                $(".pretty").css("width",michael.x_spacing)
+                michael.x_spacing = numberParse($(".pretty").css("width"))
+            }
+            if(michael.y_spacing === undefined){
+                michael.y_spacing = 10;
+            }
+            else{
+                $(".pretty").css("width",michael.y_spacing)
+                michael.y_spacing = numberParse($(".pretty").css("width"))
             }
             if(michael.leftover === undefined){
                 michael.leftover = 50;
@@ -77,7 +86,7 @@ var call = 0;
                 $(".pretty").css("width",michael.leftover)
                 michael.leftover = numberParse($(".pretty").css("width"))
             }
-            if(michael.indent === undefined){
+            if(michael.indent !== undefined){
                 michael.indent = .04 * pretty_container_width;
             }
             else{
@@ -94,7 +103,8 @@ var call = 0;
             // setting and arraging objects
 {
             
-            var space = michael.spacing;
+            var x_space = michael.x_spacing;
+            var y_space = michael.y_spacing;
             var pretty_print_height;
             var pretty_print_start = {"x":michael.indent,"y":0};
             var pretty_caught = 0;
@@ -110,11 +120,11 @@ var call = 0;
                 $(pretty_object).css({
                     "position":"relative",
                     "left":pretty_print_start["x"],
-                    "top":pretty_print_start["y"] - (pretty_print_height * index) + (pretty_print_height * pretty_caught)
+                    "top":pretty_print_start["y"] - (pretty_print_height * index) + ((pretty_print_height + y_space)* pretty_caught )
                 })
-                console.log($(pretty_object).css("left"), pretty_print_start["x"] ,space, pretty_container_width - pretty_leftover)
+                console.log($(pretty_object).css("left"), pretty_print_start["x"] ,x_space, pretty_container_width - pretty_leftover)
                 // console.log($(pretty_object).css("top"), pretty_print_start["y"] ,pretty_print_height)
-                pretty_print_start["x"] += numberParse($(pretty_object).css("width")) + space
+                pretty_print_start["x"] += numberParse($(pretty_object).css("width")) + x_space
                 return $(pretty_object)
             })
             
@@ -124,7 +134,8 @@ var call = 0;
             //  however when I use map, i try to do everything in map because it is better than function looping saves times space and hopefully I can remove the variable
             // however variables are good if others read your code
             // var pretty_print_start is going to be the basis of the positioning of the objects, it is an object the first number being the x and the second the y
-            // var space desired space between objects
+            // var x_space desired horizontal space between objects
+            // var y_space desired vertical space between objects
             // all objects must be have a position:relative attribute to be position properly inside the object
             // var pretty_print_height will contain the height of each object, in the future this variable will contain the height of the object with max height
             // var pretty_caught is the stablizier, it removes the bug of printing on same row by adding the height of the pretty_object back to the y axis
