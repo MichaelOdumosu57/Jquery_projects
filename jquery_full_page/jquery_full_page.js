@@ -1,6 +1,7 @@
-// in this version we have a reliance of outside css to enable the image fading or changing animation, we need an svg of the animation end and we need to make keyframes, so internailize in the newer volumes
+// embed of keyframes css to plugin
     //capabilities: outer body resizing
     //            : script awareness of position css attribute limiting its ablilty to change itself
+    //            :keyframnes embedding
 
 
     
@@ -11,14 +12,34 @@
     
     //far in the future: inner object resizing
     //                 : main object resizing
+    //                  : svg plugin embed
 
 
 var call = 0;
 var call_amounts = [];
+
+
+
+
+
+
+
     jQuery.fn.extend({
         full_page:function(michael){
             // this function is a special animation, where it spreads the object to the width of the page and by default makes all the child elements disappear, follow instructions or are edited in their display or content
 
+            // append keyframes css
+{
+        $("head").append("<style></style>")
+        $("style").append("@-webkit-keyframes mymove { from { background-image:url('./PEXELS_Images/story_pics/story_holder_1.jpeg');} to {background-color:white;}}@keyframes mymove {from { background-image:url('./PEXELS_Images/story_pics/story_holder_1.jpeg');}to {background-color:white;}}")
+}
+            ////////////////////////////////////////////////////////////////////
+            // needed for full page animation
+            ////////////////////////////////////////////////////////////////////
+            
+            
+            
+            
             //init settings
 {
             var full_page_flag = false;
@@ -26,6 +47,9 @@ var call_amounts = [];
                 full_page_flag = true;
 
             }
+
+            
+            
 }
             //////////////////////////////////////////////////////////////
             // if the selction position is static, we're going to change it to relative
@@ -56,24 +80,21 @@ var call_amounts = [];
                     "top":"0%",
                     "left":"0%"
                     
-                    // "background-image":"linear-gradient(-135deg,#1400c8,#b900b4,#f50000)"
-                    // "background-size": $("body").css("width").toString(),
-                    // "background-size":"cover"
-                   
+
                 },2000)
                 
-                // .removeClass("story_holder_1").addClass("story_holder_1_change");
+                
                 
                 $(this).css({
                     
-                    // "transition": "background 5s linear",
-                    //  "-webkit-transition": "background 0.5s linear",
+
                     "background-size":"cover",
                     // "-webkit-animation": "mymove 2s 1",
                     "animation": "mymove 4s 1",
                     
                     },$(this).css({
                         "background-color":"white"
+                        
                     }))
                 
                 // inner pictures (will setup control for this later)
