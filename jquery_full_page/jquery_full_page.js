@@ -1,4 +1,4 @@
-// embed of keyframes css to plugin
+// universal application when it comes to choosing images and colors
     //capabilities: outer body resizing
     //            : script awareness of position css attribute limiting its ablilty to change itself
     //            :keyframnes embedding
@@ -13,6 +13,12 @@
     //far in the future: inner object resizing
     //                 : main object resizing
     //                  : svg plugin embed
+    //                  :query for everything in the full page
+
+    // properties
+    //  svg_path, path to the svg image of final result when transforming from image to color, needed for extension to work
+    //  image_total_time time it takes for base image to change default is 4s
+    //  image_repeats: how many times image change repeats by default it is ne
 
 
 var call = 0;
@@ -28,13 +34,21 @@ var call_amounts = [];
         full_page:function(michael){
             // this function is a special animation, where it spreads the object to the width of the page and by default makes all the child elements disappear, follow instructions or are edited in their display or content
 
-            // append keyframes css
+            // embed keyframes css
 {
+        var images = []
+        images.push($(this).css("background-image").split("(")[1].split(")")[0])
+        var final_color = ["white"]
         $("head").append("<style></style>")
-        $("style").append("@-webkit-keyframes mymove { from { background-image:url('./PEXELS_Images/story_pics/story_holder_1.jpeg');} to {background-color:white;}}@keyframes mymove {from { background-image:url('./PEXELS_Images/story_pics/story_holder_1.jpeg');}to {background-color:white;}}")
+        images.forEach(function(image,index){
+            
+        $("style").append("@-webkit-keyframes mymove { from { background-image:url("+ images[index] +");} to {background-color:" + final_color[index]+ ";}}@keyframes mymove {from { background-image:url(" + images[index] + ");}to {background-color:" + final_color[index]+ ";}}")
+        })
 }
             ////////////////////////////////////////////////////////////////////
             // needed for full page animation
+            // images is an array, which will later hold info about the selectors children
+            // final color final desired color in animation
             ////////////////////////////////////////////////////////////////////
             
             
@@ -47,12 +61,26 @@ var call_amounts = [];
                 full_page_flag = true;
 
             }
+            
+            if(michael.svg_path === undefined){
+                console.error("need an svg of the final transition for it to work")
+                return
+                
+            }
+            
+            if(michael.image_total_time === undefined){
+                michael.image_total_time = "4s"
+            }
+            
+            if(michael.image_repeats === undefined){
+                michael.image_repeats = "1"
+            }
 
             
             
 }
             //////////////////////////////////////////////////////////////
-            // if the selction position is static, we're going to change it to relative
+            // if the selction position is not absolute, we're going to change it to absolute
             //////////////////////////////////////////////////////////////
 
 
@@ -70,9 +98,7 @@ var call_amounts = [];
                 }
                 
                 
-                // $(this).css({
-                //     "top":"0%"
-                // })
+
             
                 $(this).animate({
                     "height":$("body").css("height"),
@@ -87,10 +113,10 @@ var call_amounts = [];
                 
                 $(this).css({
                     
-
+                    "background-image":"url(" + michael.svg_path + ")",
                     "background-size":"cover",
-                    // "-webkit-animation": "mymove 2s 1",
-                    "animation": "mymove 4s 1",
+                    "-webkit-animation": "mymove " +  michael.image_total_time +  " " + michael.image_repeats,
+                    "animation": "mymove " +  michael.image_total_time +  " " + michael.image_repeats,
                     
                     },$(this).css({
                         "background-color":"white"
