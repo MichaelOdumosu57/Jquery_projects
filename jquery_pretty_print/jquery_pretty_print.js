@@ -1,5 +1,5 @@
 
-//implemented an algoritm that ensures no discrepancy based on the first pretty object
+//make sure to make variables exist only in the scope of the plugin, had to rename some itens becuase variables were evidently being shared among the plugins
     //capabilities : core pretty print concept in horizontal spacing
     //             : vertical reposition proper alginment
     //             :indentation, or pretty_print usuable space object
@@ -31,7 +31,7 @@
     // indent -- decides initial space for row starting, now it 4% because all containers are different
     
 
-var call;
+var pretty_call;
 
 
 
@@ -74,7 +74,7 @@ var call;
             }
 
             else if (michael.objects !== undefined ){
-                while(pretty_associate != call){
+                while(pretty_associate != pretty_call){
                     
                     console.log("hit ",pretty_associate)
                     if( $(".pretty_" + (pretty_associate).toString()).length == 0){
@@ -136,7 +136,7 @@ var call;
             var x_space = michael.x_spacing;
             var y_space = michael.y_spacing;
             var pretty_print_height;
-            var pretty_print_height_first = numberParse($(".pretty_" + (pretty_associate).toString() + ":first").css("height")); ;
+            var pretty_print_height_first = numberParse($(".pretty_" + (pretty_associate).toString() + ":first").css("height"));
             var pretty_print_start = {"x":michael.indent,"y":0};
             console.log(pretty_print_start)
             var pretty_caught = 0;
@@ -213,8 +213,8 @@ var addFnCounter = function(target){
     return function(){
         swap.apply(null);
         count++;
-        call = count;
-        console.log("func has been called " + count + " times");
+        pretty_call = count;
+        console.log("func has been pretty_called " + count + " times");
         console.log("\n");
     };
 };
