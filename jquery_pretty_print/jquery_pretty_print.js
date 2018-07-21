@@ -1,5 +1,5 @@
 
-//customization for indentation of pretty print rows
+//made an option for pretty container dimension as needed
     //capabilities : core pretty print concept in horizontal spacing
     //             : vertical reposition proper alginment
     //             :indentation, or pretty_print usuable space object
@@ -7,29 +7,30 @@
     //             : full object pretty print conept
     //             : horizontal and vertical alignment
     //             : soruce of truth for pretty print height
-    
+    //             : developer control of container dimension
+
     //planned work
     //              :pretty object regristration
-    
 
-    
-    
+
+
+
     // far in the future
     //             : pretty pattern regristration
     //             : pretty print fine tuning
     //              : detection of outer objects that do not belong in pretty print
     //              : amimatable detection, if not proper steps would be made to enable it without interfering in front end design
     //              : return error if obejcts cant be pretty printed inside
-    
-    
+
+
     // properties
-    
+
     //objects -- contains all the obejcts desired to be pretty printed, in the order of input, we could build customization but that is a waste of time and space, if michael is not an object this can be the only argumen
     // x_spacing -- amount of horizontal space between each object in pretty print, this is needed as row creation of how many objects are in the row depends on it, if you don't place one its default is 20
     // y_spacing -- amount of vertical space between each object in pretty print, this is needed as row creation of how many objects are in the row depends on it, if you don't place one its default is 10
     // leftover -- decides how much leftover there will be for the last item in the row and the end width of the container object
     // indent -- decides initial space for row starting, now it 4% because all containers are different. For customization of each row, you need an array and the array must be numbers or else it will bug. Also if there are more rows and you specify less options for each, it will indent at the last item in the array
-    
+
 
 var pretty_call;
 
@@ -40,16 +41,16 @@ var pretty_call;
     jQuery.fn.extend({
         pretty_print:function(michael){
             // jquery does not have a pretty print function, this concept function will take objects inside and obejct and fill a space accoriding to rows and columns, plenty of development required for full functionality
-            
+
             //detecting object to pretty print in and selected inner object for pretty printing
 {
             console.log($(this))
             console.log(michael)
 }
             //////////////////////////////////////////////////////////////
-            
+
             //initialization
-            
+
 {
                 //helper function
             {
@@ -63,19 +64,19 @@ var pretty_call;
                 //////////////////////////////////////////////////////////////
                 //this function takes a dimension and cuts it off and returns the number for use
                 //////////////////////////////////////////////////////////////
-                
-            var pretty_container_width = numberParse($(this).css("width"));
-            var pretty_container_height = numberParse($(this).css("height"));
+
+            var pretty_container_width =  michael.pretty_container_width !== undefined ? michael.pretty_container_width : numberParse($(this).css("width"));
+            var pretty_container_height = michael.pretty_container_height !== undefined ? michael.pretty_container_height: numberParse($(this).css("height"));
             var pretty_associate = 0;
             $("body").after("<div class = 'pretty'></div>")
             if(michael.objects === undefined){
                 michael.objects = michael;
-                
+
             }
 
             else if (michael.objects !== undefined ){
                 while(pretty_associate != pretty_call){
-                    
+
                     console.log("hit ",pretty_associate)
                     if( $(".pretty_" + (pretty_associate).toString()).length == 0){
                         console.log("hit on",pretty_associate)
@@ -83,8 +84,8 @@ var pretty_call;
                         break;
                     }
                     pretty_associate += 1;
-                    
-                
+
+
                 }
             }
             else if(typeof(michael.objects) == "array"){
@@ -129,7 +130,7 @@ var pretty_call;
                 console.log(michael.indent)
                 pretty_print_start = {"x":michael.indent,"y":0};
             }
-            
+
             $(".pretty").remove()
 }
             //////////////////////////////////////////////////////////////
@@ -139,10 +140,10 @@ var pretty_call;
             //  var pretty_row is for customization in horizontal indentation of multiple rows
             // var pretty_print_start is going to be the basis of the positioning of the objects, it is an object the first number being the x and the second the y
             //////////////////////////////////////////////////////////////
-            
+
             // setting and arraging objects
 {
-            
+
             var x_space = michael.x_spacing;
             var y_space = michael.y_spacing;
             var pretty_print_height;
@@ -152,9 +153,9 @@ var pretty_call;
             var pretty_leftover = michael.leftover
             var pretty_offset_fix = true;
             var pretty_print = $.map(michael.objects,function (pretty_object,index) {
-                
+
                 pretty_print_height = numberParse($(pretty_object).css("height"));
-                
+
                 if(pretty_print_height != pretty_print_height_first){
                     pretty_print_height = pretty_print_height_first
                 }
@@ -164,7 +165,7 @@ var pretty_call;
                 if( pretty_print_start["x"] > pretty_container_width - pretty_leftover){
                     console.log("Greater than!!")
                     if(typeof(michael.indent) == "object"){
-                        
+
                         console.log(michael.indent[pretty_row + 1])
                         if(michael.indent[pretty_row + 1] == undefined ){
                             console.log("on sunday",michael.indent[pretty_row])
@@ -176,12 +177,12 @@ var pretty_call;
                             pretty_print_start["x"] = michael.indent[pretty_row];
                         }
                     }
-                    
+
                     else{
-                        cosnole.log("its a number")
+                        console.log("its a number")
                         pretty_print_start["x"] =  michael.indent
                     }
-                    
+
                     pretty_caught += 1;
                     pretty_offset_fix = false;
                 }
@@ -190,13 +191,13 @@ var pretty_call;
                     "left":pretty_print_start["x"],
                     "top":parseInt(pretty_print_start["y"] - (pretty_print_height * index) + ((pretty_print_height + y_space)* pretty_caught ) )
                 })
-                
+
                 console.log("how its formatting",y_space, pretty_print_start["y"], pretty_print_height )
                 // console.log($(pretty_object).css("left"), pretty_print_start["x"] ,x_space, pretty_container_width - pretty_leftover)
                 // console.log($(pretty_object).css("top"), pretty_print_start["y"] ,pretty_print_height)
                 console.log($(pretty_object).css("top"))
                 if( $(michael.objects[index-1]).offset() != undefined && pretty_offset_fix == true){
-                    
+
                     if($(pretty_object).offset().top != $(michael.objects[index-1]).offset().top){
                         console.log("hit")
                         $(pretty_object).offset({
@@ -212,7 +213,7 @@ var pretty_call;
                 console.log(pretty_print_start["x"])
                 return $(pretty_object)
             })
-            
+
 }
             //////////////////////////////////////////////////////////////
             //var pretty_print holds the desired object to be pretty printed, only needed to help programmers understanding of plugin
@@ -227,10 +228,10 @@ var pretty_call;
             // var pretty_offset_fix is when the the pretty print does not work as reason to the offset, this is a flag  used for the corrective offset functionality
             //////////////////////////////////////////////////////////////
         }
-        
-        
+
+
     });
-    
+
 
 
 var addFnCounter = function(target){
@@ -247,5 +248,3 @@ var addFnCounter = function(target){
 };
 
 addFnCounter($().pretty_print);
-    
-    
