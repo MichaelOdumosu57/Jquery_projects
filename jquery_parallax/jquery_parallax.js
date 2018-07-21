@@ -1,15 +1,21 @@
-//   parallax items can be brough to display upon click, however it is paramount to make sure all items are still accessible upon click not to cover the other parallax items
+//   parallax items can be brough to display upon click, now it also has the capability of bringing all the items to proper z-index so they can still be easily accessible
 
     //capabilities:core parallax functionality
     //            : paralllax items stick to the screen once they get to the offset points
     //            : functionality applied to multiple parallax items
     //            : non-parallax items treat object as a static object
     //            : parallax items can be brough to display upon click
+    //            : all parallax items are still accessible through clicking
 
     //planned work :
     //             : universial understanding and appliacation of the parallax
     //             : smoothening of the parallax animation in chrome browsers
     //             : object screen vsibility detection (method awareness whether objects on the webpage are visible to the user)
+    //             : availbility of all parallax items through side panelling their header content in addition
+
+    // far in the future
+    //             : swapping parallax items for user experience
+    //             : a reset button for a return to the original state
 
 var its_ok = 0;
 var showcase = 0;
@@ -27,9 +33,10 @@ var spotlight = 1; //this makes sure on the parallax click it shows up as the fi
 
             }
             var parallax_array = $.map($(this), function(value, index) {
-                if(showcase <= $(value).css("z-index") ){
-                    showcase = $(value).css("z-index") + spotlight
+                if(showcase <= parseInt($(value).css("z-index")) ){
+                    showcase = parseInt($(value).css("z-index")) + spotlight
                 }
+                $(value).addClass(index.toString());
                 return [$(value)];
             });
 
@@ -43,13 +50,37 @@ var spotlight = 1; //this makes sure on the parallax click it shows up as the fi
             var unfix_left_set = michael.unfix[0].css("left")
             console.log(unfix_move)
             var i = 0;
-            while(i != parallax_array.length){
-                console.log($(item_selector))
+            var j = 0;
+            var distance_from_spotlight = 0;
+            while(i != parallax_array.length ){
+
                 $(item_selector).eq(i).click(function () {
 
                     spotlight += 1;
+                    console.log($(this).css("z-index"))
+                    console.log(spotlight,showcase)
                     $(this).css("z-index",showcase + spotlight);
-                    console.log($(this).css("background-color"))
+
+                    while( j !=  parallax_array.length ){
+
+                        distance_from_spotlight = parseInt($(this)[0].classList.value.split(" ")[$(this)[0].classList.value.split(" ").length-1]) - j;
+                        if(distance_from_spotlight < 0){
+                            distance_from_spotlight += (-2*distance_from_spotlight)
+                        }
+                        else if(distance_from_spotlight == 0){
+                            j+= 1;
+                            console.log("execution")
+                            continue;
+                        }
+                        parallax_array[j].css("z-index", (showcase + spotlight) -distance_from_spotlight)
+                        consoles("front_display",[distance_from_spotlight,parseInt($(this)[0].classList.value.split(" ")[$(this)[0].classList.value.split(" ").length-1]),j,parallax_array[j].css("z-index")])
+                        // this code allows all parallax items to be seen otherwise they would be covered and would be very hard to access not quite
+
+                        j += 1;
+
+
+                    }
+                    j = 0;
 
                 });
                 i+= 1;
@@ -153,6 +184,11 @@ var spotlight = 1; //this makes sure on the parallax click it shows up as the fi
                     data.forEach(function (selection,i) {
                         console.log("what i need to move",i,selection.css("top"), $(window).scrollTop())
                     })
+                }
+
+                if(action == "front_display"){
+
+                    console.log(data[0],data[1],data[2],data[3])
                 }
 
 
