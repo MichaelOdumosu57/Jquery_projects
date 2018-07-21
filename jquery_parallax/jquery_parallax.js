@@ -1,15 +1,15 @@
-//   here the above items are taken into account as an unfix attribute you must put as an array, this takes at most one item and fixes it once the parallax is done
+//   some sort of height relation to everything involved in the parallax and everything that is not shown in the positions of the unfix parallax objects
 
     //capabilities:core parallax functionality
     //            : paralllax items stick to the screen once they get to the offset points
     //            : functionality applied to multiple parallax items
     //            : non-parallax items treat object as a static object
-    
+
     //planned work :
     //             : universial understanding and appliacation of the parallax
     //             : smoothening of the parallax animation
     //             : object screen vsibility detection
-    
+
 var its_ok = 0;
 //global variables
 
@@ -20,7 +20,7 @@ var its_ok = 0;
 
             if(michael.unfix != undefined){
                 consoles("unfix",michael.unfix,0)
-                
+
             }
             var parallax_array = $.map($(this), function(value, index) {
                 return [$(value)];
@@ -28,19 +28,20 @@ var its_ok = 0;
             consoles("parallax_items",[$(this),parallax_array],1);
             consoles("scrollTop",$(window).scrollTop())
             consoles("distance",[parallax_array[1].offset().top - $(".parallax:first > div > h1").offset().top ,$(".parallax:first > div > h1").css("height")])
-            
+
             var unfix_move = parseFloat(michael.unfix[0].css("top").split("p")[0])
             var unfix_left_set = michael.unfix[0].css("left")
             console.log(unfix_move)
             function react_on_scroll_offset() {
-                
+
                     if ($(window).scrollTop() >= 1044)  {
                         var move = unfix_move;
                         consoles("unfix",michael.unfix,0);
                         michael.unfix[0].css("position","relative")
-                        move += (1044-338)/150;
+                        // move /= 15;
+                        move = (1065-538)/15
                         michael.unfix[0].css({"top":move.toString() + "em","left":"0em"})
-                        
+                        //probobaly something to do with everything that came before it
                         return;
                     }
                     //to stop the above items from moving and move along and treat the parallax like a big static object
@@ -51,7 +52,7 @@ var its_ok = 0;
                         michael.unfix[0].css({"position":"fixed","left":unfix_left_set})
                     }
                     //this is the end reach of the parallax
-                    
+
                         var move = 0;
                         move += $(window).scrollTop()/15;
                         parallax_array[0].css("top",move.toString() + "em")
@@ -66,7 +67,7 @@ var its_ok = 0;
                         // consoles("coordinates",parallax_array,0);
 
                     }
-                    
+
                     if ($(window).scrollTop() >= 671)  {
                         var move = 0;
                         move += ($(window).scrollTop()-671)/15;
@@ -74,7 +75,7 @@ var its_ok = 0;
                         // consoles("coordinates",parallax_array,0);
 
                     }
-                    
+
                     if ($(window).scrollTop() >= 996)  {
                         var move = 0;
                         move += ($(window).scrollTop()-996)/15;
@@ -108,7 +109,7 @@ var its_ok = 0;
 
                 wait(0)
             }
-            
+
             $(window).scroll(react_on_scroll_offset);
 
             // $(window).on("scroll",function () {
@@ -116,7 +117,7 @@ var its_ok = 0;
             // })
 
             //seems not to need the event action anymore can do it on its own
-            
+
             function consoles(action = "none",data = undefined,debug = its_ok) {
                 if(debug !== 0){
                     return;
@@ -124,34 +125,34 @@ var its_ok = 0;
                 if(action == "parallax_items"){
                     console.log(data)
                 }
-                
+
                 if(action == "scrollTop"){
                     console.log(data)
                 }
-                
+
                 if(action == "distance"){
                     console.log(data)
                 }
-                
+
                 if(action == "coordinates"){
                     data.forEach(function (selection,i) {
                         console.log(i,selection.css("top"))
                     })
                 }
-                
+
                 if(action == "unfix"){
-                    
+
                     data.forEach(function (selection,i) {
                         console.log("what i need to move",i,selection.css("top"), $(window).scrollTop())
                     })
                 }
-                
-                
+
+
             }
         }
     });
-    
-    
+
+
                 function wait(ms){
                var start = new Date().getTime();
                var end = start;
